@@ -25,15 +25,14 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/moonlight_regular"
+                android:fontFamily="@font/moontime_regular"
                 android:gravity="center"
                 android:minHeight="?actionBarSize"
                 android:paddingLeft="5dp"
                 android:paddingTop="15dp"
-                android:text="@string/app_name"
+                android:text="Plant Time"
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-                android:textSize="28sp"
-                android:textStyle="bold" />
+                android:textSize="40sp" />
         </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout
