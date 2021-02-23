@@ -26,8 +26,11 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
             0 -> {
                 return MyPlantsFragment()
             }
+            1 -> {
+                return FriendsFragment()
+            }
         }
-        return PlaceholderFragment.newInstance(position + 1)
+        return SettingsFragment.newInstance(position + 1)
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

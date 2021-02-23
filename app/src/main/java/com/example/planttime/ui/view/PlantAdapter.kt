@@ -34,7 +34,7 @@ class PlantAdapter():  RecyclerView.Adapter<PlantAdapter.ViewHolder>() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var plant = myPlants[position]
-        holder.plantName.text = "${plant.name} created on ${plant.time_left.toString()}"
+        holder.plantName.text = "${plant.name} created on ${plant.time_created.toString()}"
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
