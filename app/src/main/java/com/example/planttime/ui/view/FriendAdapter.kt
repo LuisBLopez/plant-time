@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planttime.databinding.ItemFriendBinding
-import com.example.planttime.model.Friend
+import com.example.planttime.ui.model.Friend
 
 class FriendAdapter: RecyclerView.Adapter<FriendAdapter.ViewHolder>() {
     private val friends: List<Friend> = listOf(Friend("Ely","100383423@alumnos.uc3m.es"), Friend("Luis",

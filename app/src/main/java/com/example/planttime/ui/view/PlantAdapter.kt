@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planttime.databinding.ItemPlantBinding
-import com.example.planttime.model.Plant
+import com.example.planttime.ui.model.Plant
 import java.time.LocalDate
 
 @Suppress("DEPRECATION")

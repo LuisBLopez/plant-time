@@ -1,4 +1,4 @@
-package com.example.planttime.model
+package com.example.planttime.ui.model
 
 import android.os.Build
 import androidx.annotation.RequiresApi

@@ -1,4 +1,4 @@
-package com.example.planttime.model
+package com.example.planttime.ui.model
 
 data class Friend(
     var name: String = "",
