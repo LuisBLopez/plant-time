@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.planttime.databinding.FragmentFriendsBinding
 import com.example.planttime.ui.viewmodel.PageViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class FriendsFragment: Fragment() {
     private lateinit var pageViewModel: PageViewModel
@@ -32,5 +33,9 @@ class FriendsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = FriendAdapter()
+        binding.fab.setOnClickListener {
+            Snackbar.make(view, "Add a new friend", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
     }
 }

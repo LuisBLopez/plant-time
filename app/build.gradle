@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -17,6 +18,8 @@ android {
 
         vectorDrawables.useSupportLibrary true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
     }
     buildFeatures {
         viewBinding true
@@ -51,6 +54,9 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.room:room-runtime:2.2.6'
     implementation 'androidx.room:room-ktx:2.2.6'
+    implementation 'com.google.firebase:firebase-firestore:22.1.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:22.1.0'
+    implementation 'com.android.support:multidex:1.0.3'
     kapt 'androidx.room:room-compiler:2.2.6'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

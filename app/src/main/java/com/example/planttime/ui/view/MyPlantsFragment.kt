@@ -8,11 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.planttime.databinding.FragmentMyPlantsBinding
 import com.example.planttime.ui.viewmodel.PageViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class MyPlantsFragment: Fragment() {
     private lateinit var pageViewModel: PageViewModel
     //private val myPlants: List<Plant> = listOf(Plant(0, "Cactus", Calendar.getInstance().time), Plant(1, "Succulent", Calendar.getInstance().time), Plant(2, "Dahlia", Calendar.getInstance().time))
     private lateinit var binding: FragmentMyPlantsBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,14 @@ class MyPlantsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = PlantAdapter()
+
+        binding.fab.setOnClickListener {
+            Snackbar.make(view, "Create a new plant", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+
+        }
+
+
     }
     /*companion object {
         /**
