@@ -8,16 +8,21 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planttime.databinding.ItemPlantBinding
 import com.example.planttime.ui.model.Plant
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDate
 
 @Suppress("DEPRECATION")
-class PlantAdapter():  RecyclerView.Adapter<PlantAdapter.ViewHolder>() {
+class PlantAdapter(plantList: List<Plant>):  RecyclerView.Adapter<PlantAdapter.ViewHolder>() {
     @RequiresApi(Build.VERSION_CODES.O)
-    private val myPlants: List<Plant> = listOf(Plant(0, "Cactus", LocalDate.now()), Plant(1, "Succulent", LocalDate.now()), Plant(2, "Dahlia", LocalDate.now()))
+    private val myPlants: List<Plant> = listOf(
+            Plant(LocalDate.now(), "RzZU71c31Zmi3vCiHbsC", false, "Cactus", LocalDate.now()),
+            Plant(LocalDate.now(), "l4VBLVnZeN1M7fMMhee8", true, "Succulent", LocalDate.now()),
+            Plant(LocalDate.now(), "l4VBLVnZeN1M7fMMhee8", false, "Dahlia", LocalDate.now()))
 
-    private val db = FirebaseFirestore.getInstance()
-    private val localUidSample = "RzZU71c31Zmi3vCiHbsC"
+    //private val db = FirebaseFirestore.getInstance()
+    //private val localUidSample = "RzZU71c31Zmi3vCiHbsC"
+    private lateinit var plantList: List<Plant>
 
     class ViewHolder(binding: ItemPlantBinding ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val plantName = binding.plantName
@@ -37,16 +42,45 @@ class PlantAdapter():  RecyclerView.Adapter<PlantAdapter.ViewHolder>() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        db.collection("user").document(localUidSample).get().addOnSuccessListener {
-            val plantName = it.get("plants/plant${position}/name") as String?
-            holder.plantName.text = plantName
-        }
+        println("Reading plant names AAAAA")
+        val p = plantList[position]
 
-        //var plant = myPlants[position]
-        //holder.plantName.text = "${plant.name} created on ${plant.time_created.toString()}"
+        holder.plantName.text = p.name
+
+        /*db.collection("user").document(localUidSample).get().addOnSuccessListener {
+            val plantName = it.get(FieldPath.of("plants","plant${position}","name")) as String?
+            holder.plantName.text = plantName
+        }.addOnFailureListener { //Placeholder plants
+            var plant = myPlants[position]
+            holder.plantName.text = "${plant.name} created on ${plant.time_created.toString()}"
+        }*/
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun getItemCount() = myPlants.size
+    override fun getItemCount(): Int {
+        return plantList.size
+        /*var plantsCount = 0
+
+        db.collection("user").document(localUidSample).get().addOnSuccessListener {
+            var stop = false
+            var plant = 1
+            var plantsCount = 0
+            while (!stop) {
+                if (it.get(FieldPath.of("plants", "plant${plant}", "name")) != null) {
+                    println("Plants count:${plantsCount}, plant:${plant}")
+                    plant++
+                    plantsCount++
+                }
+                else stop = true
+            }
+        }.addOnFailureListener{
+            plantsCount = myPlants.size
+        }
+        println("Number of plants:${plantsCount}")
+        return plantsCount
+        */
+        //return myPlants.size //Placeholder value
+    }
 
 }
+
