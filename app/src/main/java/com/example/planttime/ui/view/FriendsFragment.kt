@@ -20,19 +20,22 @@ class FriendsFragment: Fragment() {
         pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java).apply {
             setIndex(2)
         }
+        pageViewModel.friends.observe(this, { friends ->
+            binding.recyclerView.adapter = FriendAdapter(pageViewModel)
+        })
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFriendsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerView.adapter = FriendAdapter()
+        binding.recyclerView.adapter = FriendAdapter(pageViewModel)
         binding.fab.setOnClickListener {
             Snackbar.make(view, "Add a new friend", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()

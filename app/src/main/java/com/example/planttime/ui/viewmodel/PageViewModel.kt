@@ -4,22 +4,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.planttime.ui.model.Friend
 import com.example.planttime.ui.model.Plant
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QueryDocumentSnapshot
 
 class PageViewModel : ViewModel() {
 
     private val _index = MutableLiveData<Int>()
 
     private lateinit var db: FirebaseFirestore
-    private val localUidSample = "RzZU71c31Zmi3vCiHbsC"
+    private val localUidSample = "l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
     private var _plants: MutableLiveData<ArrayList<Plant>> = MutableLiveData<ArrayList<Plant>>()
+    private var _friends: MutableLiveData<ArrayList<Friend>> = MutableLiveData<ArrayList<Friend>>()
 
     init {
         db = FirebaseFirestore.getInstance()
         db.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
         listenToUserPlants()
+        listenToFriends()
     }
 
     private fun listenToUserPlants() {
@@ -43,6 +48,42 @@ class PageViewModel : ViewModel() {
         }
     }
 
+    private fun listenToFriends() {
+        db.collection("user").addSnapshotListener {
+            snapshot, e ->
+            if (e != null){
+                println("ERROR: Could not listen to user friend list. "+e)
+                return@addSnapshotListener
+            }
+            else if (snapshot != null) {
+
+                var allFriendsUids: ArrayList<String>
+                val allFriends = ArrayList<Friend>()
+
+                snapshot.documents.forEach { d ->
+                    if (d.id.equals(localUidSample)){
+                        //Extract friends list
+                        allFriendsUids = d.get("friends") as ArrayList<String>
+
+                        allFriendsUids.forEach{ f ->
+                            snapshot.documents.forEach {
+                                if (it.id.equals(f)){
+                                    //Create a Friend object and add it to the list
+                                    val nick = it.get("nickname") as String?
+                                    val email = it.get("email") as String?
+                                    if (nick != null && email != null) {
+                                        allFriends.add(Friend(nick, email))
+                                    }
+                                }
+                            }
+                        }
+                        _friends.value = allFriends
+                    }
+                }
+            }
+        }
+    }
+
     val text: LiveData<String> = Transformations.map(_index) {
         "Hello world from section: $it"
     }
@@ -54,4 +95,7 @@ class PageViewModel : ViewModel() {
     internal var plants:MutableLiveData<ArrayList<Plant>>
         get() {return _plants}
         set(value) {_plants = value}
+    internal var friends:MutableLiveData<ArrayList<Friend>>
+        get() {return _friends}
+        set(value) {_friends = value}
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import com.example.planttime.R
 import com.example.planttime.databinding.ItemPlantBinding
 import com.example.planttime.ui.model.Plant
 import com.example.planttime.ui.viewmodel.PageViewModel
@@ -22,12 +23,11 @@ class PlantAdapter(viewModel: PageViewModel):  RecyclerView.Adapter<PlantAdapter
             Plant(Date(),"RzZU71c31Zmi3vCiHbsC", false, "Sample succulent", Date()),
             Plant(Date(),"RzZU71c31Zmi3vCiHbsC", false, "Sample dahlia", Date()))
 
-    private val db = FirebaseFirestore.getInstance()
-    private val localUidSample = "RzZU71c31Zmi3vCiHbsC"
     private val vModel = viewModel
 
     class ViewHolder(binding: ItemPlantBinding ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val plantName = binding.plantName
+        val plantIcon = binding.plantIcon
         init {
             // Define click listener for the ViewHolder's View.
             binding.root.setOnClickListener(this)
@@ -45,14 +45,7 @@ class PlantAdapter(viewModel: PageViewModel):  RecyclerView.Adapter<PlantAdapter
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.plantName.text = vModel.plants.value?.get(position)?.name ?: "Sample Rafflesia"
-
-        /*db.collection("user").document(localUidSample).get().addOnSuccessListener {
-            val plantName = it.get("plants/plant${position}/name") as String?
-            holder.plantName.text = plantName
-        }*/
-
-        //var plant = myPlants[position]
-        //holder.plantName.text = "${plant.name} created on ${plant.time_created.toString()}"
+        holder.plantIcon.setImageResource(R.drawable.cactus) //Placeholder image for now
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
