@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.planttime.databinding.FragmentMyPlantsBinding
 import com.example.planttime.ui.viewmodel.PageViewModel
@@ -21,19 +22,24 @@ class MyPlantsFragment: Fragment() {
         pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java).apply {
             setIndex(1)
         }
+        pageViewModel.plants.observe(this, {
+            plants ->
+                //println(plants[0].name)
+                binding.recyclerView.adapter = PlantAdapter(pageViewModel)
+        })
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMyPlantsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerView.adapter = PlantAdapter()
+        binding.recyclerView.adapter = PlantAdapter(pageViewModel)
 
         binding.fab.setOnClickListener {
             Snackbar.make(view, "Create a new plant", Snackbar.LENGTH_LONG)
