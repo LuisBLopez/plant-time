@@ -57,6 +57,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:22.1.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:22.1.0'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
     kapt 'androidx.room:room-compiler:2.2.6'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
