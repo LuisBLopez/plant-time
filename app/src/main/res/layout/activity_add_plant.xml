@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:text="Add a photo/video"
-        app:backgroundTint="#7AC486"
+        app:backgroundTint="@color/aquamarine"
         app:layout_constraintBottom_toTopOf="@id/plant_confirm_add"
         app:layout_constraintStart_toStartOf="parent" />
     <Button
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:text="Create new plant"
-        app:backgroundTint="#7AC486"
+        app:backgroundTint="@color/aquamarine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.planttime.databinding.FragmentSettingsBinding
 import com.example.planttime.ui.viewmodel.PageViewModel
-import com.google.android.material.snackbar.Snackbar
 
 /**
  * A placeholder fragment containing a simple view.
@@ -40,8 +39,6 @@ class SettingsFragment : Fragment() {
             notifications = if(notifications.equals("On")) "Off"
             else "On"
             binding.notifications.text= "Notifications: ${notifications}"
-            Snackbar.make(view, "Notifications turned ${notifications.toLowerCase()}", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
         }
     }
 

@@ -15,7 +15,8 @@
         <ImageView
             android:id="@+id/plant_icon"
             android:layout_width="100dp"
-            android:layout_height="100dp">
+            android:layout_height="100dp"
+            android:src = "@drawable/cactus">
         </ImageView>
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,12 +47,14 @@
                 <Button
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_marginLeft="15dp"
                     android:background = "@drawable/rounded_btn"
                     android:foreground="@drawable/remove">
                 </Button>
                 <ImageButton
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_marginLeft="15dp"
                     android:background="@drawable/rounded_btn"
                     app:backgroundTint="#7AC486"
                     android:foreground="@drawable/view_purple">
