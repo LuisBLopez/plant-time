@@ -1,11 +1,17 @@
 package com.example.planttime.ui.view
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.planttime.AddPlantActivity
+import com.example.planttime.R
 import com.example.planttime.databinding.FragmentMyPlantsBinding
 import com.example.planttime.ui.model.Plant
 import com.example.planttime.ui.viewmodel.PageViewModel
@@ -16,15 +22,23 @@ class MyPlantsFragment: Fragment() {
     //private val myPlants: List<Plant> = listOf(Plant(0, "Cactus", Calendar.getInstance().time), Plant(1, "Succulent", Calendar.getInstance().time), Plant(2, "Dahlia", Calendar.getInstance().time))
     private lateinit var binding: FragmentMyPlantsBinding
 
-    private lateinit var plantList: List<Plant>
+    //private lateinit var plantList: List<Plant>
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java).apply {
             setIndex(1)
             loadInitialData()
-            plantList = getCurrentPlants()
+            //plantList = getCurrentPlants()
         }
+        pageViewModel.plants.observe(this, Observer{
+            plants -> //actPlantName.setAdapter(PlantAdapter(context!!, R.layout.support_simple_spinner_dropdown_item, plants)
+                if (plants.size>0)
+                    println("AAAAAAA "+plants.first().toString())
+                else
+                    println("AAAAAAA plantlist empty")
+        })
     }
 
     override fun onCreateView(
@@ -37,16 +51,22 @@ class MyPlantsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerView.adapter = PlantAdapter(plantList)
+        binding.recyclerView.adapter = PlantAdapter(pageViewModel)
 
         binding.fab.setOnClickListener {
             Snackbar.make(view, "Create a new plant", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
 
+            val intent = Intent(requireActivity(), AddPlantActivity::class.java)
+            startActivity(intent)
         }
-
-
     }
+
+    /*override fun onActivityCreated(savedInstanceState: Bundle?){
+        super.onActivityCreated(savedInstanceState)
+
+    }*/
+
     /*companion object {
         /**
          * The fragment argument representing the section number for this

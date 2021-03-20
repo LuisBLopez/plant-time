@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddPlantActivity">
+
+    <EditText
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/plant_name"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:hint="Name of the plant"
+        android:maxLines="1"
+        />
+    <EditText
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/plant_name"
+        android:id="@+id/plant_expiration"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:hint="Expiration date"
+        android:maxLines="1"
+        android:inputType="date"
+        android:focusable="false"
+        android:clickable="true"
+        />
+    <EditText
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/plant_expiration"
+        android:id="@+id/plant_letter"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:hint="Write a letter to your future self here (optional)"
+        android:maxLines="20"
+        />
+
+    <Button
+        android:id="@+id/plant_media"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="Add a photo/video"
+        app:backgroundTint="#7AC486"
+        app:layout_constraintBottom_toTopOf="@id/plant_confirm_add"
+        app:layout_constraintStart_toStartOf="parent" />
+    <Button
+        android:id="@+id/plant_confirm_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="Create new plant"
+        app:backgroundTint="#7AC486"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

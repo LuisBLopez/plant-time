@@ -6,19 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.example.planttime.R
 import com.example.planttime.databinding.ItemPlantBinding
 import com.example.planttime.ui.model.Plant
+import com.example.planttime.ui.viewmodel.PageViewModel
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDate
+import java.util.*
 
 @Suppress("DEPRECATION")
-class PlantAdapter(plantList: List<Plant>):  RecyclerView.Adapter<PlantAdapter.ViewHolder>() {
+class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<PlantAdapter.ViewHolder>() {
     @RequiresApi(Build.VERSION_CODES.O)
     private val myPlants: List<Plant> = listOf(
-            Plant(LocalDate.now(), "RzZU71c31Zmi3vCiHbsC", false, "Cactus", LocalDate.now()),
-            Plant(LocalDate.now(), "l4VBLVnZeN1M7fMMhee8", true, "Succulent", LocalDate.now()),
-            Plant(LocalDate.now(), "l4VBLVnZeN1M7fMMhee8", false, "Dahlia", LocalDate.now()))
+            Plant(Date(), "RzZU71c31Zmi3vCiHbsC", false, "Cactus", Date()),
+            Plant(Date(), "l4VBLVnZeN1M7fMMhee8", true, "Succulent", Date()),
+            Plant(Date(), "l4VBLVnZeN1M7fMMhee8", false, "Dahlia", Date()))
 
     //private val db = FirebaseFirestore.getInstance()
     //private val localUidSample = "RzZU71c31Zmi3vCiHbsC"
@@ -37,15 +40,15 @@ class PlantAdapter(plantList: List<Plant>):  RecyclerView.Adapter<PlantAdapter.V
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(ItemPlantBinding.inflate(LayoutInflater.from(parent.context)))
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         println("Reading plant names AAAAA")
-        val p = plantList[position]
+        val plant = viewModel.plants.value?.get(position)
+        holder.plantName.text = plant?.name
 
-        holder.plantName.text = p.name
+        //val p = plantList[position]
 
         /*db.collection("user").document(localUidSample).get().addOnSuccessListener {
             val plantName = it.get(FieldPath.of("plants","plant${position}","name")) as String?
@@ -58,7 +61,13 @@ class PlantAdapter(plantList: List<Plant>):  RecyclerView.Adapter<PlantAdapter.V
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getItemCount(): Int {
-        return plantList.size
+        val plants = viewModel.plants.value
+
+        println("getItemCount: "+plants?.size)
+
+        return plants?.size ?: 0
+
+        //return plantList.size
         /*var plantsCount = 0
 
         db.collection("user").document(localUidSample).get().addOnSuccessListener {
