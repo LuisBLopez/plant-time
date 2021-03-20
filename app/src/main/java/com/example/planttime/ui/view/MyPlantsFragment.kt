@@ -43,33 +43,8 @@ class MyPlantsFragment: Fragment() {
                     .setAction("Action", null).show()
 
             val intent = Intent(requireActivity(), AddPlantActivity::class.java)
+            //intent.putExtra("firestore",pageViewModel)
             startActivity(intent)
         }
     }
-
-    /*override fun onActivityCreated(savedInstanceState: Bundle?){
-        super.onActivityCreated(savedInstanceState)
-
-    }*/
-
-    /*companion object {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private const val ARG_SECTION_NUMBER = "section_number"
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        @JvmStatic
-        fun newInstance(sectionNumber: Int): PlaceholderFragment {
-            return PlaceholderFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_SECTION_NUMBER, sectionNumber)
-                }
-            }
-        }
-    }*/
 }

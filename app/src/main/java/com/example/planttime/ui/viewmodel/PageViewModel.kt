@@ -89,6 +89,10 @@ class PageViewModel : ViewModel() {
         _index.value = index
     }
 
+    fun getDb(): FirebaseFirestore{
+        return db
+    }
+
     internal var plants:MutableLiveData<ArrayList<Plant>>
         get() {return _plants}
         set(value) {_plants = value}
