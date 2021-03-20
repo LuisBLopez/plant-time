@@ -6,10 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planttime.databinding.ItemFriendBinding
 import com.example.planttime.ui.model.Friend
+import com.example.planttime.ui.viewmodel.PageViewModel
 
-class FriendAdapter: RecyclerView.Adapter<FriendAdapter.ViewHolder>() {
+class FriendAdapter(viewModel: PageViewModel): RecyclerView.Adapter<FriendAdapter.ViewHolder>() {
     private val friends: List<Friend> = listOf(Friend("Ely","100383423@alumnos.uc3m.es"), Friend("Luis",
         "100383535@alumnos.uc3m.es"))
+    private val vModel = viewModel
 
     class ViewHolder(binding: ItemFriendBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val friend = binding.friendEmail
@@ -27,8 +29,12 @@ class FriendAdapter: RecyclerView.Adapter<FriendAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.friend.text = friends[position].toString()
+        //holder.friend.text = friends[position].toString()
+        holder.friend.text = vModel.friends.value?.get(position)?.toString() ?: "AMIGO, EMAIL@email.email"
     }
 
-    override fun getItemCount(): Int = friends.size
+    override fun getItemCount(): Int {
+        return vModel.friends.value?.size ?: 2
+        //return friends.size
+    }
 }
