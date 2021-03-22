@@ -2,7 +2,6 @@ package com.example.planttime.ui.model
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import java.time.LocalDate
 import java.util.*
 
 data class Plant @RequiresApi(Build.VERSION_CODES.O) constructor(
@@ -11,4 +10,7 @@ data class Plant @RequiresApi(Build.VERSION_CODES.O) constructor(
         var expired: Boolean = false,
         val name: String = "",
         val opening: Date? = null)
-{}
+{
+        var letter: String? = null
+        var mediaRef: String? = null
+}

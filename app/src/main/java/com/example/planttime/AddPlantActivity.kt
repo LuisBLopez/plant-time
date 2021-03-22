@@ -2,12 +2,10 @@ package com.example.planttime
 
 import android.app.DatePickerDialog
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.example.planttime.databinding.ActivityAddPlantBinding
 import com.example.planttime.ui.model.Plant
 import com.example.planttime.ui.view.DatePickerFragment
@@ -15,7 +13,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import java.util.*
-import kotlin.collections.HashMap
 
 class AddPlantActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPlantBinding
@@ -60,15 +57,17 @@ class AddPlantActivity : AppCompatActivity() {
             if (!binding.plantName.text.isNullOrEmpty() && !binding.plantExpiration.text.isNullOrEmpty()) {
                 Snackbar.make(view, "Creating a new plant...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
-
-                var plantId = "30" //Compute new available plant id here
-
                 println("STARTING SETTING STUFF MAYBE")
 
-                val data = Plant(Date(),localUidSample,false,binding.plantName.text.toString(),Date(set_year,set_month,set_day))
+                val data = Plant(Date(),localUidSample,false,binding.plantName.text.toString(),Date(set_year-1900,set_month,set_day))
+                val letter = binding.plantLetter.text
+                if(!letter.isNullOrEmpty()) {
+                    data.letter = letter.toString()
+                }
                 db.collection("user").document(localUidSample).collection("plants").document().set(data)
 
                 println("DONE SETTING STUFF MAYBE")
+                finish()
             }
             else {
                 Snackbar.make(view, "Please, fill up at least the name and expiration date.", Snackbar.LENGTH_LONG)
