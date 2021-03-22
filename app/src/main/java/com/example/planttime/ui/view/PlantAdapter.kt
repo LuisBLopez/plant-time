@@ -1,5 +1,6 @@
 package com.example.planttime.ui.view
 
+import android.app.AlertDialog
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +30,9 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
 
     class ViewHolder(binding: ItemPlantBinding ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val plantName = binding.plantName
+        val delButton = binding.delPlant
+        val viewButton = binding.viewPlant
+        val context = binding.root.getContext()
         init {
             // Define click listener for the ViewHolder's View.
             binding.root.setOnClickListener(this)
@@ -44,9 +48,23 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        println("Reading plant names AAAAA")
         val plant = viewModel.plants.value?.get(position)
         holder.plantName.text = plant?.name
+        holder.delButton.setOnClickListener{
+            val builder = AlertDialog.Builder(holder.context)
+            builder.setMessage("Are you sure you want to delete \"${holder.plantName.text}\"?")
+                .setCancelable(false)
+                .setPositiveButton("Yes") { dialog, id ->
+                    //Delete selected plant
+                    viewModel.deletePlant(position, holder.plantName.text.toString())
+                }
+                .setNegativeButton("No") { dialog, id ->
+                    dialog.dismiss()
+                }
+            val alert = builder.create()
+            alert.show()
+        }
+
 
         //val p = plantList[position]
 

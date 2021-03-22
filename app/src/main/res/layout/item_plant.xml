@@ -45,6 +45,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
                 <Button
+                    android:id="@+id/del_plant"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="15dp"
@@ -52,6 +53,7 @@
                     android:foreground="@drawable/remove">
                 </Button>
                 <ImageButton
+                    android:id="@+id/view_plant"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="15dp"

@@ -99,4 +99,14 @@ class PageViewModel : ViewModel() {
     internal var friends:MutableLiveData<ArrayList<Friend>>
         get() {return _friends}
         set(value) {_friends = value}
+
+    fun deletePlant(position: Int, plantName: String) {
+        //Find the plant in the database and delete it:
+        db.collection("user").document(localUidSample).collection("plants").get().addOnSuccessListener {
+            val plant = it.documents.get(position)
+            if (plant.getString("name").equals(plantName))  {
+                db.collection("user").document(localUidSample).collection("plants").document(plant.id).delete()
+            }
+        }
+    }
 }
