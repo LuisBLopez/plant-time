@@ -11,9 +11,6 @@ import com.example.planttime.R
 import com.example.planttime.databinding.ItemPlantBinding
 import com.example.planttime.ui.model.Plant
 import com.example.planttime.ui.viewmodel.PageViewModel
-import com.google.firebase.firestore.FieldPath
-import com.google.firebase.firestore.FirebaseFirestore
-import java.time.LocalDate
 import java.util.*
 
 @Suppress("DEPRECATION")
@@ -64,7 +61,17 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
             val alert = builder.create()
             alert.show()
         }
-
+        if (plant?.opening?.before(Date()) == true){ //Plant can be opened
+            println("I am enabled")
+            val drawable = holder.context.resources.getDrawable(R.drawable.view_purple)
+            holder.viewButton.foreground = drawable
+        }
+        else{
+            println("I am disabled")
+            val drawable = holder.context.resources.getDrawable(R.drawable.view_grey)
+            holder.viewButton.isClickable = false
+            holder.viewButton.foreground = drawable
+        }
 
         //val p = plantList[position]
 
