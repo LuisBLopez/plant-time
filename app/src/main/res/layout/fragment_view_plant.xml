@@ -18,75 +18,80 @@
                  <TextView
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:layout_margin="20dp"
+                     android:layout_margin="10dp"
                      android:text="Name:"
                      android:fontFamily="@font/moontime_regular"
-                     android:textSize="25dp"
+                     android:textSize="40sp"
                      android:textColor="@color/black"
-                     ></TextView>
+                     />
                  <TextView
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:layout_margin="20dp"
+                     android:layout_margin="10dp"
+                     android:textSize="15sp"
                      android:id="@+id/plant_name"
                      android:hint="Name of the plant"
-                     ></TextView>
+                     />
              </TableRow>
              <TableRow>
                  <TextView
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:layout_margin="20dp"
+                     android:layout_margin="10dp"
                      android:text="Creator:"
                      android:fontFamily="@font/moontime_regular"
-                     android:textSize="25dp"
+                     android:textSize="40sp"
                      android:textColor="@color/black"
-                     ></TextView>
+                     />
                  <TextView
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:layout_margin="20dp"
+                     android:layout_margin="10dp"
+                     android:textSize="15sp"
                      android:id="@+id/plant_creator"
                      android:hint="Creator of the plant"
-                     ></TextView>
+                     android:scrollHorizontally="true"
+                     />
              </TableRow>
              <TableRow>
                  <TextView
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:layout_margin="20dp"
+                     android:layout_margin="10dp"
                      android:text="Opened:"
                      android:fontFamily="@font/moontime_regular"
-                     android:textSize="25dp"
+                     android:textSize="40sp"
                      android:textColor="@color/black"
-                     ></TextView>
+                     />
                  <TextView
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:layout_margin="20dp"
+                     android:layout_margin="10sp"
                      android:id="@+id/expiration_date"
+                     android:textSize="15sp"
                      android:hint="Expiration date of the plant"
                      android:inputType="date"
-                     ></TextView>
+                     />
              </TableRow>
              <TableRow>
                  <TextView
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:layout_margin="20dp"
+                     android:layout_margin="10dp"
                      android:text="Letter:"
                      android:fontFamily="@font/moontime_regular"
-                     android:textSize="25dp"
+                     android:textSize="40sp"
                      android:textColor="@color/black"
-                     ></TextView>
+                     />
                  <TextView
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:layout_margin="20dp"
+                     android:layout_margin="10dp"
+                     android:textSize="15sp"
                      android:id="@+id/plant_letter"
                      android:hint="Letter of the plant"
                      android:maxLines="20"
-                     ></TextView>
+                     />
              </TableRow>
          </TableLayout>
      </LinearLayout>
