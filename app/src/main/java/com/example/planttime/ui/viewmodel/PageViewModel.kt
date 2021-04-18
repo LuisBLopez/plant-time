@@ -17,12 +17,15 @@ class PageViewModel : ViewModel() {
     private val localUidSample = "l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
     private var _plants: MutableLiveData<ArrayList<Plant>> = MutableLiveData<ArrayList<Plant>>()
     private var _friends: MutableLiveData<ArrayList<Friend>> = MutableLiveData<ArrayList<Friend>>()
+    private var _self: MutableLiveData<Friend> = MutableLiveData<Friend>() //Self
+    private var _user: MutableLiveData<Friend> = MutableLiveData<Friend>() //User to be retrieved
 
     init {
         db = FirebaseFirestore.getInstance()
         db.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
         listenToUserPlants()
         listenToFriends()
+        getSelf()
     }
 
     private fun listenToUserPlants() {
@@ -99,6 +102,12 @@ class PageViewModel : ViewModel() {
     internal var friends:MutableLiveData<ArrayList<Friend>>
         get() {return _friends}
         set(value) {_friends = value}
+    internal var self:MutableLiveData<Friend>
+        get() {return _self}
+        set(value) {_self = value}
+    internal var user:MutableLiveData<Friend>
+        get() {return _user}
+        set(value) {_user = value}
 
     fun deletePlant(position: Int, plantName: String) {
         //Find the plant in the database and delete it:
@@ -106,6 +115,34 @@ class PageViewModel : ViewModel() {
             val plant = it.documents.get(position)
             if (plant.getString("name").equals(plantName))  {
                 db.collection("user").document(localUidSample).collection("plants").document(plant.id).delete()
+            }
+        }
+    }
+
+    private fun getSelf(){
+        db.collection("user").document(localUidSample).get().addOnSuccessListener {
+            val name = it.get("nickname").toString()
+            val email = it.get("email").toString()
+            if(email.isNullOrEmpty() || name.isNullOrEmpty()){
+                println("Could not get self")
+                return@addOnSuccessListener
+            }
+            else{
+                val self = Friend(name, email)
+                _self.value = self
+            }
+        }
+    }
+    fun getUser(Id: String) {
+        db.collection("user").document(Id).get().addOnSuccessListener {
+            val name = it.get("nickname").toString()
+            val email = it.get("email").toString()
+            if(email.isNullOrEmpty() || name.isNullOrEmpty()){
+                println("Could not get friend")
+                return@addOnSuccessListener
+            }
+            else{
+                _user.value = Friend(name, email)
             }
         }
     }

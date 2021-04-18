@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planttime.R
 import com.example.planttime.databinding.ItemPlantBinding
@@ -62,12 +63,21 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
             alert.show()
         }
         if (plant?.opening?.before(Date()) == true){ //Plant can be opened
-            println("I am enabled")
+            //println("I am enabled")
             val drawable = holder.context.resources.getDrawable(R.drawable.view_purple)
             holder.viewButton.foreground = drawable
+            /*viewModel.getUser(plant?.creator)
+            viewModel.user.observe(this,{
+                println(it)
+            })*/
+            holder.viewButton.setOnClickListener {
+                val viewPlantFragment = ViewPlantFragment.newInstance(plant, viewModel)
+                val fragmentManager = (holder.context as AppCompatActivity).supportFragmentManager
+                viewPlantFragment.show(fragmentManager, "ViewPlantFragment")
+            }
         }
         else{
-            println("I am disabled")
+            //println("I am disabled")
             val drawable = holder.context.resources.getDrawable(R.drawable.view_grey)
             holder.viewButton.isClickable = false
             holder.viewButton.foreground = drawable
@@ -88,7 +98,7 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
     override fun getItemCount(): Int {
         val plants = viewModel.plants.value
 
-        println("getItemCount: "+plants?.size)
+        //println("getItemCount: "+plants?.size)
 
         return plants?.size ?: 0
 
