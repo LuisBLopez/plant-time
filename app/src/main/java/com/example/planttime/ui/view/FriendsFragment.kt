@@ -1,11 +1,13 @@
 package com.example.planttime.ui.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.planttime.AddFriendActivity
 import com.example.planttime.databinding.FragmentFriendsBinding
 import com.example.planttime.ui.viewmodel.PageViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -39,6 +41,9 @@ class FriendsFragment: Fragment() {
         binding.fab.setOnClickListener {
             Snackbar.make(view, "Add a new friend", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
+            val intent = Intent(requireActivity(), AddFriendActivity::class.java)
+            //intent.putExtra("firestore",pageViewModel)
+            startActivity(intent)
         }
     }
 }
