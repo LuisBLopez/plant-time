@@ -5,14 +5,16 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.planttime.databinding.ActivityAddFriendBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.SetOptions
 
 class AddFriendActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddFriendBinding
-    private val localUidSample = "RzZU71c31Zmi3vCiHbsC" //"l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
+    private val localUidSample = FirebaseAuth.getInstance().currentUser?.uid!! //"RzZU71c31Zmi3vCiHbsC" //"l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
     private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +26,8 @@ class AddFriendActivity : AppCompatActivity() {
         db.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
 
         onViewCreated(binding.root, savedInstanceState)
+
+        println("LOCAL UID from ADDFRIENDACTIVITY is: $localUidSample")
     }
 
     private fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,10 +42,19 @@ class AddFriendActivity : AppCompatActivity() {
                         return@addSnapshotListener
                     }
                     else {
-                        snapshot.documents.forEach{
-                            val friendEmail = it.get("email")
+                        snapshot.documents.forEach{ field ->
+                            val friendEmail = field.get("email")
                             if(friendEmail != null && friendEmail.toString() == email.toString()){
-                                db.collection("user").document(localUidSample).update("friends", FieldValue.arrayUnion(it.id))
+                                db.collection("user").document(localUidSample).get().addOnSuccessListener { user ->
+                                    if (user.get("friends") != null) {
+                                        db.collection("user").document(localUidSample)
+                                            .update("friends", FieldValue.arrayUnion(field.id))
+                                    }
+                                    else {
+                                        val data = hashMapOf("friends" to listOf(field.id))
+                                        db.collection("user").document(localUidSample).set(data, SetOptions.merge())
+                                    }
+                                }
                                 Snackbar.make(view, "Friend added!", Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show()
                             }
