@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.planttime.R
 import com.example.planttime.databinding.ItemPlantBinding
 import com.example.planttime.ui.model.Plant
@@ -28,6 +30,7 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
 
     class ViewHolder(binding: ItemPlantBinding ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val plantName = binding.plantName
+        val plantIcon = binding.plantIcon
         val delButton = binding.delPlant
         val viewButton = binding.viewPlant
         val context = binding.root.getContext()
@@ -48,6 +51,19 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val plant = viewModel.plants.value?.get(position)
         holder.plantName.text = plant?.name
+
+        if (plant?.mediaRef.isNullOrEmpty()){
+            holder.plantIcon.setImageResource(R.drawable.cactus)
+        }
+        else {
+            Glide.with(holder.plantIcon)
+                .load(plant?.mediaRef)
+                .centerCrop()
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .error(R.drawable.ic_error)
+                .into(holder.plantIcon)
+        }
+
         holder.delButton.setOnClickListener{
             val builder = AlertDialog.Builder(holder.context)
             builder.setMessage("Are you sure you want to delete \"${holder.plantName.text}\"?")

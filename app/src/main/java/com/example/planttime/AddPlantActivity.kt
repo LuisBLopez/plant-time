@@ -3,6 +3,7 @@ package com.example.planttime
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -14,11 +15,13 @@ import com.example.planttime.ui.view.DatePickerFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+@AndroidEntryPoint
 class AddPlantActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPlantBinding
-    private val localUidSample = "l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
+    private val localUidSample = "RzZU71c31Zmi3vCiHbsC" //"l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
     private lateinit var db: FirebaseFirestore
     private var aes = AES()
 
@@ -58,12 +61,19 @@ class AddPlantActivity : AppCompatActivity() {
 
         binding.plantConfirmAdd.setOnClickListener {
             val letter = binding.plantLetter.text
+            val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
+            val strPicUrl = sharedPref.getString("chosen_pic_url", "No_photo_chosen_yet")
+
             if (!binding.plantName.text.isNullOrEmpty() && !binding.plantExpiration.text.isNullOrEmpty() && !letter.isNullOrEmpty()) {
                 Snackbar.make(view, "Creating a new plant...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
                 println("STARTING SETTING STUFF MAYBE")
 
                 val data = Plant(Date(),localUidSample,false,binding.plantName.text.toString(),Date(set_year-1900,set_month,set_day))
+
+                if (strPicUrl != "No_photo_chosen_yet") data.mediaRef = strPicUrl
+
+                sharedPref.edit().putString("chosen_pic_url", "No_photo_chosen_yet").apply()
 
                 val context = PlantTimeApp.applicationContext()
                 val cipherText = aes.encrypt(context, letter.toString())
@@ -82,7 +92,7 @@ class AddPlantActivity : AppCompatActivity() {
                 finish()
             }
             else {
-                Snackbar.make(view, "Please, fill up at least the name and expiration date.", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Please, fill up all fields. Choosing a photo is optional.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
             }
         }
