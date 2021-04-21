@@ -2,7 +2,9 @@ package com.example.planttime.ui.app
 
 import android.app.Application
 import android.content.Context
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class PlantTimeApp: Application(){
     init {
         instance = this

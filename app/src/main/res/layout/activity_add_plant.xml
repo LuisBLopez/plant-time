@@ -5,58 +5,97 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddPlantActivity">
-
-    <EditText
+    <ScrollView
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/plant_name"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_margin="20dp"
-        android:hint="Name of the plant"
-        android:maxLines="1"
-        />
-    <EditText
+        android:layout_height="match_parent">
+    <LinearLayout
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plant_name"
-        android:id="@+id/plant_expiration"
-        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
-        android:layout_margin="20dp"
-        android:hint="Expiration date"
-        android:maxLines="1"
-        android:inputType="date"
-        android:focusable="false"
-        android:clickable="true"
-        />
-    <EditText
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plant_expiration"
-        android:id="@+id/plant_letter"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_margin="20dp"
-        android:hint="Write a letter to your future self here"
-        android:maxLines="20"
-        />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <EditText
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/plant_name"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_margin="20dp"
+            android:hint="Name of the plant"
+            android:maxLines="1"
+            />
+        <EditText
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/plant_name"
+            android:id="@+id/plant_expiration"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_margin="20dp"
+            android:hint="Expiration date"
+            android:maxLines="1"
+            android:inputType="date"
+            android:focusable="false"
+            android:clickable="true"
+            />
+        <EditText
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/plant_expiration"
+            android:id="@+id/plant_letter"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_margin="20dp"
+            android:hint="Write a letter to your future self here"
+            android:maxLines="20"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/plant_pics_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Choose an icon for your plant:"
+                android:textSize="18sp"
+                android:layout_margin="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/plant_letter"/>
+        </LinearLayout>
 
-    <!--<Button
-        android:id="@+id/plant_media"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="Add a photo/video"
-        app:backgroundTint="@color/aquamarine"
-        app:layout_constraintBottom_toTopOf="@id/plant_confirm_add"
-        app:layout_constraintStart_toStartOf="parent" />-->
-    <Button
-        android:id="@+id/plant_confirm_add"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="Create new plant"
-        app:backgroundTint="@color/aquamarine"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <androidx.fragment.app.FragmentContainerView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/plant_pics_text"
+            android:id="@+id/nav_host_fragment_main"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_graph" />
 
+        <!--<Button
+            android:id="@+id/plant_media"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Add a photo/video"
+            app:backgroundTint="@color/aquamarine"
+            app:layout_constraintBottom_toTopOf="@id/plant_confirm_add"
+            app:layout_constraintStart_toStartOf="parent" />-->
+        <Button
+            android:id="@+id/plant_confirm_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Create new plant"
+            app:backgroundTint="@color/aquamarine"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
