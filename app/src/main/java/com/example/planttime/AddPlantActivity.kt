@@ -7,7 +7,9 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.planttime.databinding.ActivityAddPlantBinding
+import com.example.planttime.ui.app.PlantTimeApp
 import com.example.planttime.ui.model.Plant
+import com.example.planttime.ui.security.AES
 import com.example.planttime.ui.view.DatePickerFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,6 +20,7 @@ class AddPlantActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPlantBinding
     private val localUidSample = "l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
     private lateinit var db: FirebaseFirestore
+    private var aes = AES()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,16 +57,25 @@ class AddPlantActivity : AppCompatActivity() {
         }
 
         binding.plantConfirmAdd.setOnClickListener {
-            if (!binding.plantName.text.isNullOrEmpty() && !binding.plantExpiration.text.isNullOrEmpty()) {
+            val letter = binding.plantLetter.text
+            if (!binding.plantName.text.isNullOrEmpty() && !binding.plantExpiration.text.isNullOrEmpty() && !letter.isNullOrEmpty()) {
                 Snackbar.make(view, "Creating a new plant...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
                 println("STARTING SETTING STUFF MAYBE")
 
                 val data = Plant(Date(),localUidSample,false,binding.plantName.text.toString(),Date(set_year-1900,set_month,set_day))
-                val letter = binding.plantLetter.text
-                if(!letter.isNullOrEmpty()) {
-                    data.letter = letter.toString()
+
+                val context = PlantTimeApp.applicationContext()
+                val cipherText = aes.encrypt(context, letter.toString())
+                val sb = StringBuilder()
+                for(c in cipherText){
+                    sb.append(c.toChar())
                 }
+                println("cipherText: ${String(cipherText)}")
+                val decryptedText = aes.decrypt(context, cipherText)
+
+                println("decrypted text: ${String(decryptedText)}")
+                data.letter = sb.toString()
                 db.collection("user").document(localUidSample).collection("plants").document().set(data)
 
                 println("DONE SETTING STUFF MAYBE")

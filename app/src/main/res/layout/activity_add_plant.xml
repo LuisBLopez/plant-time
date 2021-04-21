@@ -36,11 +36,11 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_margin="20dp"
-        android:hint="Write a letter to your future self here (optional)"
+        android:hint="Write a letter to your future self here"
         android:maxLines="20"
         />
 
-    <Button
+    <!--<Button
         android:id="@+id/plant_media"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
         android:text="Add a photo/video"
         app:backgroundTint="@color/aquamarine"
         app:layout_constraintBottom_toTopOf="@id/plant_confirm_add"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />-->
     <Button
         android:id="@+id/plant_confirm_add"
         android:layout_width="match_parent"

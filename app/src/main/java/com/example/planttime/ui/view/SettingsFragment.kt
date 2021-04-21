@@ -35,10 +35,14 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        pageViewModel.self.observe(viewLifecycleOwner,{ self ->
+            binding.name.setText(self.nickname)
+            binding.email.text = self.email
+        })
         binding.notifications.setOnClickListener(){
             notifications = if(notifications.equals("On")) "Off"
             else "On"
-            binding.notifications.text= "Notifications: ${notifications}"
+            binding.notifications.text= "Notifications: $notifications"
         }
     }
 

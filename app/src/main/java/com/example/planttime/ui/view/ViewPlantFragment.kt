@@ -10,17 +10,16 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
 import com.example.planttime.R
 import com.example.planttime.databinding.FragmentViewPlantBinding
+import com.example.planttime.ui.app.PlantTimeApp
 import com.example.planttime.ui.model.Friend
 import com.example.planttime.ui.model.Plant
+import com.example.planttime.ui.security.AES
 import com.example.planttime.ui.viewmodel.PageViewModel
 
 class ViewPlantFragment : DialogFragment() {
 
     private lateinit var binding: FragmentViewPlantBinding
-    private lateinit var plantName: String
-    private lateinit var expirationDate: String
-    private lateinit var creator: String
-    private lateinit var letter: String
+    private val aes = AES()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
@@ -43,7 +42,17 @@ class ViewPlantFragment : DialogFragment() {
         user.observe(this,{binding.plantCreator.text = it.toString()}) //wait until the value for the creator has been retrieved
         binding.plantName.text = arguments?.getString(NAME).toString()
         binding.expirationDate.text = arguments?.getString(EXPDATE).toString()
-        binding.plantLetter.text = arguments?.getString(LETTER).toString()
+        val cipherText = arguments?.getString(LETTER).toString()
+        val sb = StringBuilder(cipherText)
+        val cipherTextBA= ByteArray(sb.length)
+        for(i in 0..(sb.length-1)){
+            cipherTextBA.set(i, sb.get(i).toByte())
+        }
+        //android.util.Base64.encode(cipherText.toByteArray(), android.util.Base64.DEFAULT)
+        //val letter = aes.decrypt(PlantTimeApp.applicationContext(), android.util.Base64.encode(cipherTextBA, android.util.Base64.DEFAULT))
+        val letter = aes.decrypt(PlantTimeApp.applicationContext(), cipherTextBA)
+        println("letter ${String(letter)}")
+        binding.plantLetter.text = String(letter)
     }
 
     companion object {

@@ -24,7 +24,7 @@
                 android:layout_height="100dp"
                 android:id="@+id/user_img"
                 android:src="@drawable/user_purple"
-                android:padding="10dp"></ImageView>
+                android:padding="10dp"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="7dp"
                     android:text="Name"
-                    android:textSize="14sp"></EditText>
+                    android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/email"
@@ -49,7 +49,7 @@
                     android:layout_margin="7dp"
                     android:paddingLeft="3dp"
                     android:text="example@example.com"
-                    app:layout_constraintStart_toStartOf="@+id/user_img"></TextView>
+                    app:layout_constraintStart_toStartOf="@+id/user_img"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -65,25 +65,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Log out"
-                android:textAlignment="viewStart"></Button>
+                android:textAlignment="viewStart"/>
             <Button
                 android:id="@+id/notifications"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Notifications: On"
-                android:textAlignment="viewStart"></Button>
+                android:textAlignment="viewStart"/>
             <Button
                 android:id="@+id/about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="About"
-                android:textAlignment="viewStart"></Button>
+                android:textAlignment="viewStart"/>
             <Button
                 android:id="@+id/reset"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="reset"
-                android:textAlignment="viewStart"></Button>
+                android:textAlignment="viewStart"/>
 
         </LinearLayout>
 
