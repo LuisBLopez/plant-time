@@ -1,6 +1,7 @@
 package com.example.planttime
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
@@ -21,5 +22,13 @@ class MainActivity : AppCompatActivity() {
         val logo: ImageView = findViewById(R.id.logo)
         logo.setImageResource(R.drawable.logo)
 
+    }
+
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        return if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //Do nothing so we can't return to the login screen like this.
+            true
+        } else super.onKeyDown(keyCode, event)
     }
 }

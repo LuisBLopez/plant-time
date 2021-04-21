@@ -13,6 +13,7 @@ import com.example.planttime.ui.model.Plant
 import com.example.planttime.ui.security.AES
 import com.example.planttime.ui.view.DatePickerFragment
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +22,7 @@ import java.util.*
 @AndroidEntryPoint
 class AddPlantActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPlantBinding
-    private val localUidSample = "RzZU71c31Zmi3vCiHbsC" //"l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
+    private val localUidSample = FirebaseAuth.getInstance().currentUser?.uid!! //"RzZU71c31Zmi3vCiHbsC" //"l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
     private lateinit var db: FirebaseFirestore
     private var aes = AES()
 
@@ -35,6 +36,8 @@ class AddPlantActivity : AppCompatActivity() {
         db.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
 
         onViewCreated(binding.root, savedInstanceState)
+
+        println("LOCAL UID from ADDPLANTACTIVITY is: $localUidSample")
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -46,7 +49,7 @@ class AddPlantActivity : AppCompatActivity() {
         binding.plantExpiration.setOnClickListener {
             Snackbar.make(view, "Choose a date when the plant will bloom", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
-            val datePickerFrag = DatePickerFragment.newInstance(DatePickerDialog.OnDateSetListener{ _, year, month, day ->
+            val datePickerFrag = DatePickerFragment.newInstance(DatePickerDialog.OnDateSetListener { _, year, month, day ->
                 // +1 because January is zero
                 val selectedDate = day.toString() + " / " + (month + 1) + " / " + year
 
@@ -69,7 +72,13 @@ class AddPlantActivity : AppCompatActivity() {
                         .setAction("Action", null).show()
                 println("STARTING SETTING STUFF MAYBE")
 
-                val data = Plant(Date(),localUidSample,false,binding.plantName.text.toString(),Date(set_year-1900,set_month,set_day))
+                val data = Plant(
+                    Date(), localUidSample, false, binding.plantName.text.toString(), Date(
+                        set_year - 1900,
+                        set_month,
+                        set_day
+                    )
+                )
 
                 if (strPicUrl != "No_photo_chosen_yet") data.mediaRef = strPicUrl
 
@@ -86,13 +95,19 @@ class AddPlantActivity : AppCompatActivity() {
 
                 println("decrypted text: ${String(decryptedText)}")
                 data.letter = sb.toString()
-                db.collection("user").document(localUidSample).collection("plants").document().set(data)
+                db.collection("user").document(localUidSample).collection("plants").document().set(
+                    data
+                )
 
                 println("DONE SETTING STUFF MAYBE")
                 finish()
             }
             else {
-                Snackbar.make(view, "Please, fill up all fields. Choosing a photo is optional.", Snackbar.LENGTH_LONG)
+                Snackbar.make(
+                    view,
+                    "Please, fill up all fields. Choosing a photo is optional.",
+                    Snackbar.LENGTH_LONG
+                )
                         .setAction("Action", null).show()
             }
         }

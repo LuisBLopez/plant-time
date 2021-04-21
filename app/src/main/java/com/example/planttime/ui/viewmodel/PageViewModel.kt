@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.planttime.ui.model.Friend
 import com.example.planttime.ui.model.Plant
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 
@@ -14,7 +15,7 @@ class PageViewModel : ViewModel() {
     private val _index = MutableLiveData<Int>()
 
     private lateinit var db: FirebaseFirestore
-    private val localUidSample = "RzZU71c31Zmi3vCiHbsC" //"l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
+    private val localUidSample = FirebaseAuth.getInstance().currentUser?.uid!! //"RzZU71c31Zmi3vCiHbsC" //"l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
     private var _plants: MutableLiveData<ArrayList<Plant>> = MutableLiveData<ArrayList<Plant>>()
     private var _friends: MutableLiveData<ArrayList<Friend>> = MutableLiveData<ArrayList<Friend>>()
     private var _self: MutableLiveData<Friend> = MutableLiveData<Friend>() //Self
@@ -26,6 +27,8 @@ class PageViewModel : ViewModel() {
         listenToUserPlants()
         listenToFriends()
         getSelf()
+
+        println("LOCAL UID from PAGEVIEWMODEL is: $localUidSample")
     }
 
     private fun listenToUserPlants() {
@@ -62,22 +65,24 @@ class PageViewModel : ViewModel() {
 
                 snapshot.documents.forEach { d ->
                     if (d.id.equals(localUidSample)){
-                        //Extract friends list
-                        allFriendsUids = d.get("friends") as ArrayList<String>
+                        if (d.get("friends") != null) {
+                            //Extract friends list
+                            allFriendsUids = d.get("friends") as ArrayList<String>
 
-                        allFriendsUids.forEach{ f ->
-                            snapshot.documents.forEach {
-                                if (it.id.equals(f)){
-                                    //Create a Friend object and add it to the list
-                                    val nick = it.get("nickname") as String?
-                                    val email = it.get("email") as String?
-                                    if (nick != null && email != null) {
-                                        allFriends.add(Friend(nick, email))
+                            allFriendsUids.forEach{ f ->
+                                snapshot.documents.forEach {
+                                    if (it.id.equals(f)){
+                                        //Create a Friend object and add it to the list
+                                        val nick = it.get("nickname") as String?
+                                        val email = it.get("email") as String?
+                                        if (nick != null && email != null) {
+                                            allFriends.add(Friend(nick, email))
+                                        }
                                     }
                                 }
                             }
+                            _friends.value = allFriends
                         }
-                        _friends.value = allFriends
                     }
                 }
             }
@@ -117,6 +122,12 @@ class PageViewModel : ViewModel() {
                 db.collection("user").document(localUidSample).collection("plants").document(plant.id).delete()
             }
         }
+    }
+
+    fun changeNickname(nickname: String){
+        db.collection("user").document(localUidSample).update("nickname", nickname)
+        _self.value?.nickname = nickname
+        self.value?.nickname = nickname
     }
 
     private fun getSelf(){
