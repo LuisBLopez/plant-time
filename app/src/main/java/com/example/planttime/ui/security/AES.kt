@@ -19,47 +19,30 @@ class AES {
         val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
         val plainText = strToEncrypt.toByteArray(Charsets.UTF_8)
         if(!sharedPref.contains("secret_key") && !sharedPref.contains("initialization_vector")){
+            //Generate a new key and save it in the shared preferences of the device:
             val keygen = KeyGenerator.getInstance("AES")
             keygen.init(256)
             val key = keygen.generateKey()
             saveSecretKey(context, key)
+            //Encrypt the text and return it. Store the initialization vector too:
             cipher.init(Cipher.ENCRYPT_MODE, key)
             val cipherText = cipher.doFinal(plainText)
             saveInitializationVector(context, cipher.iv)
-            val sb = StringBuilder()
-            for (b in cipherText) {
-                sb.append(b.toChar())
-            }
-            println("Key does not exist: $key")
             return cipherText
         }
+        //Otherwise, retrieve key and initialization vector from the shared preferences directly to encrypt data:
         val key: SecretKey = getSavedSecretKey(context)
         val ivSpec = IvParameterSpec(getSavedInitializationVector(context))
         cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec)
-        val cipherText = cipher.doFinal(plainText)
-        /*val sb = StringBuilder()
-        for (b in cipherText) {
-            sb.append(b.toChar())
-        }*/
-        println("Key exists: $key")
-        //Toast.makeText(context, "dbg encrypted = [" + sb.toString() + "]", Toast.LENGTH_LONG).show()
-        return cipherText
+        return cipher.doFinal(plainText)
     }
 
     fun decrypt(context:Context, dataToDecrypt: ByteArray): ByteArray {
-        println("dataToDecrypt: ${String(dataToDecrypt)}")
+        //Retrieve key and initialization vector from the shared preferences to decrypt the data:
         val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
         val ivSpec = IvParameterSpec(getSavedInitializationVector(context))
         cipher.init(Cipher.DECRYPT_MODE, getSavedSecretKey(context), ivSpec)
-        val cipherText = cipher.doFinal(dataToDecrypt)
-
-        /*val sb = StringBuilder()
-        for (b in cipherText) {
-            sb.append(b.toChar())
-        }*/
-        //Toast.makeText(context, "dbg decrypted = [" + sb.toString() + "]", Toast.LENGTH_LONG).show()
-
-        return cipherText
+        return cipher.doFinal(dataToDecrypt)
     }
 
     private fun saveSecretKey(context:Context, secretKey: SecretKey) {
@@ -78,8 +61,7 @@ class AES {
         val strSecretKey = sharedPref.getString("secret_key", "")
         val bytes = android.util.Base64.decode(strSecretKey, android.util.Base64.DEFAULT)
         val ois = ObjectInputStream(ByteArrayInputStream(bytes))
-        val secretKey = ois.readObject() as SecretKey
-        return secretKey
+        return ois.readObject() as SecretKey
     }
 
     private fun saveInitializationVector(context: Context, initializationVector: ByteArray) {
@@ -98,8 +80,7 @@ class AES {
         val strInitializationVector = sharedPref.getString("initialization_vector", "")
         val bytes = android.util.Base64.decode(strInitializationVector, android.util.Base64.DEFAULT)
         val ois = ObjectInputStream(ByteArrayInputStream(bytes))
-        val initializationVector = ois.readObject() as ByteArray
-        return initializationVector
+        return ois.readObject() as ByteArray
     }
 
 }

@@ -2,7 +2,6 @@ package com.example.planttime.ui.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,8 +19,10 @@ class MyPlantsFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java).apply {
-            setIndex(1)
+            setIndex(1) //First tab of the main screen.
         }
+
+        //Observe changes in the local user's plants list in real time:
         pageViewModel.plants.observe(this, { plants ->
             binding.recyclerView.adapter = PlantAdapter(pageViewModel)
         })
@@ -39,12 +40,12 @@ class MyPlantsFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = PlantAdapter(pageViewModel)
 
+        //Button for adding a new plant:
         binding.fab.setOnClickListener {
             Snackbar.make(view, "Create a new plant", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
-
+            //Move to the adding plant procedure activity:
             val intent = Intent(requireActivity(), AddPlantActivity::class.java)
-            //intent.putExtra("firestore",pageViewModel)
             startActivity(intent)
         }
     }

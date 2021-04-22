@@ -19,8 +19,10 @@ class FriendsFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java).apply {
-            setIndex(2)
+            setIndex(2) //Second tab of the main screen.
         }
+
+        //Observe changes in the local user's friend list in real time:
         pageViewModel.friends.observe(this, { friends ->
             binding.recyclerView.adapter = FriendAdapter(pageViewModel)
         })
@@ -37,11 +39,13 @@ class FriendsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = FriendAdapter(pageViewModel)
+
+        //Button for adding a new friend:
         binding.fab.setOnClickListener {
             Snackbar.make(view, "Add a new friend", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
+            //Move to the adding friend procedure activity:
             val intent = Intent(requireActivity(), AddFriendActivity::class.java)
-            //intent.putExtra("firestore",pageViewModel)
             startActivity(intent)
         }
     }

@@ -12,8 +12,8 @@ class UnsplashRepository @Inject constructor(private val unsplashApi: UnsplashAp
     fun getSearchResults(query: String) =
         Pager(
             config = PagingConfig(
-                pageSize = 5,
-                maxSize = 20,
+                pageSize = 5, //Amount of photos displayed on a single page.
+                maxSize = 20, //Max amount of photos retrieved per call.
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { UnsplashPagingSource(unsplashApi, query) }

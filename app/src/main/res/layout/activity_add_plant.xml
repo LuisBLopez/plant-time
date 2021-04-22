@@ -77,16 +77,6 @@
             android:layout_marginRight="20dp"
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_graph" />
-
-        <!--<Button
-            android:id="@+id/plant_media"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="Add a photo/video"
-            app:backgroundTint="@color/aquamarine"
-            app:layout_constraintBottom_toTopOf="@id/plant_confirm_add"
-            app:layout_constraintStart_toStartOf="parent" />-->
         <Button
             android:id="@+id/plant_confirm_add"
             android:layout_width="match_parent"

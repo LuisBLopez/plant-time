@@ -23,6 +23,7 @@ class ViewPlantFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
+        //Show the "view plant" screen as a pop-up:
         binding = FragmentViewPlantBinding.inflate(LayoutInflater.from(context))
         return AlertDialog.Builder(requireActivity())
             .setView(binding.root)
@@ -39,19 +40,18 @@ class ViewPlantFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //Show the basic details of the chosen plant on screen:
         user.observe(this,{binding.plantCreator.text = it.toString()}) //wait until the value for the creator has been retrieved
         binding.plantName.text = arguments?.getString(NAME).toString()
         binding.expirationDate.text = arguments?.getString(EXPDATE).toString()
+        //Decrypt the letter and show it too:
         val cipherText = arguments?.getString(LETTER).toString()
         val sb = StringBuilder(cipherText)
         val cipherTextBA= ByteArray(sb.length)
         for(i in 0..(sb.length-1)){
             cipherTextBA.set(i, sb.get(i).toByte())
         }
-        //android.util.Base64.encode(cipherText.toByteArray(), android.util.Base64.DEFAULT)
-        //val letter = aes.decrypt(PlantTimeApp.applicationContext(), android.util.Base64.encode(cipherTextBA, android.util.Base64.DEFAULT))
         val letter = aes.decrypt(PlantTimeApp.applicationContext(), cipherTextBA)
-        println("letter ${String(letter)}")
         binding.plantLetter.text = String(letter)
     }
 

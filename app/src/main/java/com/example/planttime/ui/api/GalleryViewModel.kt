@@ -17,11 +17,7 @@ class GalleryViewModel @ViewModelInject constructor(
         repository.getSearchResults(queryString).cachedIn(viewModelScope)
     }
 
-    fun searchPhotos(query: String) {
-        currentQuery.value = query
-    }
-
     companion object {
-        private const val DEFAULT_QUERY = "plants"
+        private const val DEFAULT_QUERY = "plants" //By default, we will do a search in Unsplash's photos database using this word.
     }
 }

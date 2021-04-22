@@ -15,13 +15,11 @@ class UnsplashPhotoAdapter(private val listener: OnItemClickListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val binding = ItemUnsplashPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
         return PhotoViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         val currentItem = getItem(position)
-
         if (currentItem != null) {
             holder.bind(currentItem)
         }
@@ -31,6 +29,7 @@ class UnsplashPhotoAdapter(private val listener: OnItemClickListener) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
+            //Define a listener for every picture:
             binding.root.setOnClickListener {
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
@@ -43,21 +42,22 @@ class UnsplashPhotoAdapter(private val listener: OnItemClickListener) :
         }
 
         fun bind(photo: UnsplashPhoto) {
+            //Use Glide to update the imageViews of the recyclerView with the images corresponding to their urls:
             binding.apply {
                 Glide.with(itemView)
                     .load(photo.urls.regular)
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .error(R.drawable.ic_error)
+                    .error(R.drawable.ic_error) //If the image could not load (connectivity problems), display an X icon.
                     .into(imageView)
-
-                textViewUserName.text = photo.user.username
+                textViewUserName.text = photo.user.username //Give credit to the owner of the picture.
             }
         }
     }
 
     interface OnItemClickListener {
         fun onItemClick(photo: UnsplashPhoto) {
+            //(To be redefined elsewhere)
         }
     }
 
@@ -65,7 +65,6 @@ class UnsplashPhotoAdapter(private val listener: OnItemClickListener) :
         private val PHOTO_COMPARATOR = object : DiffUtil.ItemCallback<UnsplashPhoto>() {
             override fun areItemsTheSame(oldItem: UnsplashPhoto, newItem: UnsplashPhoto) =
                 oldItem.id == newItem.id
-
             override fun areContentsTheSame(oldItem: UnsplashPhoto, newItem: UnsplashPhoto) =
                 oldItem == newItem
         }

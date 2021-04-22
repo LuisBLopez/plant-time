@@ -1,6 +1,5 @@
 package com.example.planttime
 
-import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -22,7 +21,7 @@ import java.util.*
 @AndroidEntryPoint
 class AddPlantActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPlantBinding
-    private val localUidSample = FirebaseAuth.getInstance().currentUser?.uid!! //"RzZU71c31Zmi3vCiHbsC" //"l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
+    private val localUidSample = FirebaseAuth.getInstance().currentUser?.uid!!
     private lateinit var db: FirebaseFirestore
     private var aes = AES()
 
@@ -30,76 +29,78 @@ class AddPlantActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddPlantBinding.inflate(layoutInflater)
-        setContentView(binding.root)//(R.layout.activity_add_plant)
+        setContentView(binding.root)
 
         db = FirebaseFirestore.getInstance()
         db.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
 
-        onViewCreated(binding.root, savedInstanceState)
-
-        println("LOCAL UID from ADDPLANTACTIVITY is: $localUidSample")
+        onViewCreated(binding.root)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var set_day = 0
-        var set_month = 0
-        var set_year = -1
+    fun onViewCreated(view: View) {
+        var setDay = 0
+        var setMonth = 0
+        var setYear = -1
 
+        //Trigger the datepicker screen to set an expiration date:
         binding.plantExpiration.setOnClickListener {
             Snackbar.make(view, "Choose a date when the plant will bloom", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
-            val datePickerFrag = DatePickerFragment.newInstance(DatePickerDialog.OnDateSetListener { _, year, month, day ->
+            val datePickerFrag = DatePickerFragment.newInstance { _, year, month, day ->
                 // +1 because January is zero
                 val selectedDate = day.toString() + " / " + (month + 1) + " / " + year
 
-                set_day = day
-                set_month = month
-                set_year = year
+                setDay = day
+                setMonth = month
+                setYear = year
 
                 binding.plantExpiration.setText(selectedDate)
-            })
+            }
             datePickerFrag.show(supportFragmentManager, "datePicker")
         }
 
+        //Button for finishing the add plant process:
         binding.plantConfirmAdd.setOnClickListener {
             val letter = binding.plantLetter.text
             val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
             val strPicUrl = sharedPref.getString("chosen_pic_url", "No_photo_chosen_yet")
 
+            //Check that the mandatory fields are filled:
             if (!binding.plantName.text.isNullOrEmpty() && !binding.plantExpiration.text.isNullOrEmpty() && !letter.isNullOrEmpty()) {
                 Snackbar.make(view, "Creating a new plant...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
-                println("STARTING SETTING STUFF MAYBE")
 
+                //Create a new plant with the gathered data:
                 val data = Plant(
                     Date(), localUidSample, false, binding.plantName.text.toString(), Date(
-                        set_year - 1900,
-                        set_month,
-                        set_day
+                        setYear - 1900,
+                        setMonth,
+                        setDay
                     )
                 )
 
+                //If a picture has been chosen, attach its url. Otherwise, it will use a default preset cactus picture.
                 if (strPicUrl != "No_photo_chosen_yet") data.mediaRef = strPicUrl
 
+                //Clean the shared preferences for the next plant.
                 sharedPref.edit().putString("chosen_pic_url", "No_photo_chosen_yet").apply()
 
+                //Encrypt the letter with AES:
                 val context = PlantTimeApp.applicationContext()
                 val cipherText = aes.encrypt(context, letter.toString())
                 val sb = StringBuilder()
                 for(c in cipherText){
                     sb.append(c.toChar())
                 }
-                println("cipherText: ${String(cipherText)}")
-                val decryptedText = aes.decrypt(context, cipherText)
-
-                println("decrypted text: ${String(decryptedText)}")
                 data.letter = sb.toString()
+
+                //Store the plant into Firestore:
                 db.collection("user").document(localUidSample).collection("plants").document().set(
                     data
                 )
 
-                println("DONE SETTING STUFF MAYBE")
+                //Terminate the activity and return to the main screen:
                 finish()
             }
             else {

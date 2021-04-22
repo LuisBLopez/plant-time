@@ -14,7 +14,7 @@ import com.google.firebase.firestore.SetOptions
 class AddFriendActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddFriendBinding
-    private val localUidSample = FirebaseAuth.getInstance().currentUser?.uid!! //"RzZU71c31Zmi3vCiHbsC" //"l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
+    private val localUidSample = FirebaseAuth.getInstance().currentUser?.uid!!
     private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,15 +25,16 @@ class AddFriendActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
         db.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
 
-        onViewCreated(binding.root, savedInstanceState)
-
-        println("LOCAL UID from ADDFRIENDACTIVITY is: $localUidSample")
+        onViewCreated(binding.root)
     }
 
-    private fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    private fun onViewCreated(view: View) {
+        //Confirm adding new friend button:
         binding.addFriend.setOnClickListener{
+            //Check that an email has been input:
             val email = binding.friendEmail.text
             if(!email.isNullOrEmpty()){
+                //Retrieve the list of existing users from the database:
                 db.collection("user").addSnapshotListener{
                     snapshot, e ->
                     if(e != null || snapshot == null){
@@ -42,14 +43,18 @@ class AddFriendActivity : AppCompatActivity() {
                         return@addSnapshotListener
                     }
                     else {
+                        //Find the right user by checking their emails:
                         snapshot.documents.forEach{ field ->
                             val friendEmail = field.get("email")
                             if(friendEmail != null && friendEmail.toString() == email.toString()){
+                                //The user with matching email has been found.
                                 db.collection("user").document(localUidSample).get().addOnSuccessListener { user ->
+                                    //If the local user has a friendlist already, add the friend directly:
                                     if (user.get("friends") != null) {
                                         db.collection("user").document(localUidSample)
                                             .update("friends", FieldValue.arrayUnion(field.id))
                                     }
+                                    //Otherwise, create it and add the new friend:
                                     else {
                                         val data = hashMapOf("friends" to listOf(field.id))
                                         db.collection("user").document(localUidSample).set(data, SetOptions.merge())
@@ -68,6 +73,7 @@ class AddFriendActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
             }
         }
+        //Return button:
         binding.back.setOnClickListener{
             finish()
         }

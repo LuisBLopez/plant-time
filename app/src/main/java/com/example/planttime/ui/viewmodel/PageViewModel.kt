@@ -14,23 +14,21 @@ class PageViewModel : ViewModel() {
 
     private val _index = MutableLiveData<Int>()
 
-    private lateinit var db: FirebaseFirestore
-    private val localUidSample = FirebaseAuth.getInstance().currentUser?.uid!! //"RzZU71c31Zmi3vCiHbsC" //"l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
+    private var db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val localUidSample = FirebaseAuth.getInstance().currentUser?.uid!!
     private var _plants: MutableLiveData<ArrayList<Plant>> = MutableLiveData<ArrayList<Plant>>()
     private var _friends: MutableLiveData<ArrayList<Friend>> = MutableLiveData<ArrayList<Friend>>()
     private var _self: MutableLiveData<Friend> = MutableLiveData<Friend>() //Self
     private var _user: MutableLiveData<Friend> = MutableLiveData<Friend>() //User to be retrieved
 
     init {
-        db = FirebaseFirestore.getInstance()
         db.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
         listenToUserPlants()
         listenToFriends()
         getSelf()
-
-        println("LOCAL UID from PAGEVIEWMODEL is: $localUidSample")
     }
 
+    //Observes updates in the local user's plants list:
     private fun listenToUserPlants() {
         db.collection("user").document(localUidSample).collection("plants")
             .addSnapshotListener { snapshot, e ->
@@ -46,11 +44,12 @@ class PageViewModel : ViewModel() {
                             allPlants.add(plant)
                         }
                     }
-                    _plants.value = allPlants
+                    _plants.value = allPlants //Save the updated plant list in the viewmodel's plants variable.
                 }
             }
     }
 
+    //Observes updates in the local user's friends list:
     private fun listenToFriends() {
         db.collection("user").addSnapshotListener {
             snapshot, e ->
@@ -81,7 +80,7 @@ class PageViewModel : ViewModel() {
                                     }
                                 }
                             }
-                            _friends.value = allFriends
+                            _friends.value = allFriends //Save the updated friend list in the viewmodel's friends variable.
                         }
                     }
                 }
@@ -93,12 +92,9 @@ class PageViewModel : ViewModel() {
         "Hello world from section: $it"
     }
 
+    //Allows for tab page changing:
     fun setIndex(index: Int) {
         _index.value = index
-    }
-
-    fun getDb(): FirebaseFirestore{
-        return db
     }
 
     internal var plants:MutableLiveData<ArrayList<Plant>>
@@ -114,8 +110,8 @@ class PageViewModel : ViewModel() {
         get() {return _user}
         set(value) {_user = value}
 
+    //Find the plant in the database and delete it:
     fun deletePlant(position: Int, plantName: String) {
-        //Find the plant in the database and delete it:
         db.collection("user").document(localUidSample).collection("plants").get().addOnSuccessListener {
             val plant = it.documents.get(position)
             if (plant.getString("name").equals(plantName))  {
@@ -124,12 +120,14 @@ class PageViewModel : ViewModel() {
         }
     }
 
+    //Update the nickname of the local user both in the database and local variables:
     fun changeNickname(nickname: String){
         db.collection("user").document(localUidSample).update("nickname", nickname)
         _self.value?.nickname = nickname
         self.value?.nickname = nickname
     }
 
+    //Get name and email of the local user from the database:
     private fun getSelf(){
         db.collection("user").document(localUidSample).get().addOnSuccessListener {
             val name = it.get("nickname").toString()
@@ -144,6 +142,8 @@ class PageViewModel : ViewModel() {
             }
         }
     }
+
+    //Get name and email of any user from the database:
     fun getUser(Id: String) {
         db.collection("user").document(Id).get().addOnSuccessListener {
             val name = it.get("nickname").toString()

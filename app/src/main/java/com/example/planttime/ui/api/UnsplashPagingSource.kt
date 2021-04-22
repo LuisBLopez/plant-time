@@ -15,9 +15,11 @@ class UnsplashPagingSource(
         val position = params.key ?: UNSPLASH_STARTING_PAGE_INDEX
 
         return try {
+            //Use retrofit to gather a Json with the result of a basic search query:
             val response = unsplashApi.searchPhotos(query, position, params.loadSize)
             val photos = response.results
 
+            //Load the images as they fit in different pages:
             LoadResult.Page(
                 data = photos,
                 prevKey = if (position == UNSPLASH_STARTING_PAGE_INDEX) null else position - 1,

@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
-        //val fab: FloatingActionButton = findViewById(R.id.fab)
         val logo: ImageView = findViewById(R.id.logo)
         logo.setImageResource(R.drawable.logo)
 
