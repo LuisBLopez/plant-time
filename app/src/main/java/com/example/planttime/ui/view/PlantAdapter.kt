@@ -44,7 +44,7 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemPlantBinding.inflate(LayoutInflater.from(parent.context)))
+        return ViewHolder(ItemPlantBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -25,7 +25,7 @@ class FriendAdapter(viewModel: PageViewModel): RecyclerView.Adapter<FriendAdapte
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemFriendBinding.inflate(LayoutInflater.from(parent.context)))
+        return ViewHolder(ItemFriendBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
