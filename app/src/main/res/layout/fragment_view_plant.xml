@@ -35,6 +35,7 @@
                      android:layout_weight="1"
                      android:maxLines="3"
                      android:ellipsize="end"
+                     android:paddingBottom="20dp"
                      />
              </TableRow>
              <TableRow
@@ -58,6 +59,7 @@
                      android:layout_weight="1"
                      android:maxLines="3"
                      android:ellipsize="end"
+                     android:paddingBottom="20dp"
                      android:scrollHorizontally="true"
                      android:scrollbars="horizontal"
                      />

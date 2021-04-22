@@ -39,7 +39,7 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="7dp"
-                    android:text="Name"
+                    android:hint="Name"
                     android:textSize="14sp"/>
 
                 <TextView
