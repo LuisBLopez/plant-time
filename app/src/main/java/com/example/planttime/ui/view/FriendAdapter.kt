@@ -27,6 +27,7 @@ class FriendAdapter(viewModel: PageViewModel): RecyclerView.Adapter<FriendAdapte
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        //Update each friend instance's text field with its information on screen:
         holder.friend.text = vModel.friends.value?.get(position)?.toString() ?: "You have no friends registered yet. Add one using the button below! :)"
     }
 

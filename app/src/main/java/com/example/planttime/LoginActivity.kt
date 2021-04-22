@@ -36,19 +36,22 @@ class LoginActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun onViewCreated(view: View) {
 
+        //Register button:
         binding.btnRegister.setOnClickListener {
             if (binding.email.text.isNotEmpty() && binding.password.text.isNotEmpty()) {
                 val email = binding.email.text.toString()
                 val password = binding.password.text.toString()
 
-                FirebaseAuth.getInstance()
+                FirebaseAuth.getInstance() //Try to register into Firebase Auth
                     .createUserWithEmailAndPassword(email,password).addOnCompleteListener {
                         if (it.isSuccessful) {
-                            FirebaseAuth.getInstance()
+                            FirebaseAuth.getInstance() //Attempt to log in with the new account
                                 .signInWithEmailAndPassword(email,password).addOnCompleteListener {
+                                    //Set a default nickname and gather the recently created user id:
                                     val data = Friend("Newbie Gardener", email)
                                     val newUid = FirebaseAuth.getInstance().currentUser?.uid
                                     if (!newUid.isNullOrEmpty())
+                                        //Register a new instance of this user in Firestore with the same uid (so it is unique):
                                         db.collection("user").document(newUid).set(data)
 
                                     if (it.isSuccessful) {
@@ -74,11 +77,12 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        //Log in button:
         binding.btnLogin.setOnClickListener {
             if (binding.email.text.isNotEmpty() && binding.password.text.isNotEmpty()) {
                 val email = binding.email.text.toString()
                 val password = binding.password.text.toString()
-                FirebaseAuth.getInstance()
+                FirebaseAuth.getInstance() //Attempt to log in using Firebase Auth
                     .signInWithEmailAndPassword(email,password).addOnCompleteListener {
                         if (it.isSuccessful) {
                             Snackbar.make(view, "Logged in successfully!", Snackbar.LENGTH_LONG)

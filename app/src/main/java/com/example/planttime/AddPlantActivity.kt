@@ -43,6 +43,7 @@ class AddPlantActivity : AppCompatActivity() {
         var setMonth = 0
         var setYear = -1
 
+        //Trigger the datepicker screen to set an expiration date:
         binding.plantExpiration.setOnClickListener {
             Snackbar.make(view, "Choose a date when the plant will bloom", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
@@ -59,15 +60,18 @@ class AddPlantActivity : AppCompatActivity() {
             datePickerFrag.show(supportFragmentManager, "datePicker")
         }
 
+        //Button for finishing the add plant process:
         binding.plantConfirmAdd.setOnClickListener {
             val letter = binding.plantLetter.text
             val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
             val strPicUrl = sharedPref.getString("chosen_pic_url", "No_photo_chosen_yet")
 
+            //Check that the mandatory fields are filled:
             if (!binding.plantName.text.isNullOrEmpty() && !binding.plantExpiration.text.isNullOrEmpty() && !letter.isNullOrEmpty()) {
                 Snackbar.make(view, "Creating a new plant...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
 
+                //Create a new plant with the gathered data:
                 val data = Plant(
                     Date(), localUidSample, false, binding.plantName.text.toString(), Date(
                         setYear - 1900,
@@ -76,10 +80,13 @@ class AddPlantActivity : AppCompatActivity() {
                     )
                 )
 
+                //If a picture has been chosen, attach its url. Otherwise, it will use a default preset cactus picture.
                 if (strPicUrl != "No_photo_chosen_yet") data.mediaRef = strPicUrl
 
+                //Clean the shared preferences for the next plant.
                 sharedPref.edit().putString("chosen_pic_url", "No_photo_chosen_yet").apply()
 
+                //Encrypt the letter with AES:
                 val context = PlantTimeApp.applicationContext()
                 val cipherText = aes.encrypt(context, letter.toString())
                 val sb = StringBuilder()
@@ -88,9 +95,12 @@ class AddPlantActivity : AppCompatActivity() {
                 }
                 data.letter = sb.toString()
 
+                //Store the plant into Firestore:
                 db.collection("user").document(localUidSample).collection("plants").document().set(
                     data
                 )
+
+                //Terminate the activity and return to the main screen:
                 finish()
             }
             else {

@@ -44,6 +44,7 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
         val plant = viewModel.plants.value?.get(position)
         holder.plantName.text = plant?.name
 
+        //Display the plant icon, if registered. Otherwise, display the default cactus image.
         if (plant?.mediaRef.isNullOrEmpty()){
             holder.plantIcon.setImageResource(R.drawable.cactus)
         }
@@ -56,12 +57,13 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
                 .into(holder.plantIcon)
         }
 
+        //Button for deleting the selected plant:
         holder.delButton.setOnClickListener{
             val builder = AlertDialog.Builder(holder.context)
             builder.setMessage("Are you sure you want to delete \"${holder.plantName.text}\"?")
                 .setCancelable(false)
                 .setPositiveButton("Yes") { dialog, id ->
-                    //Delete selected plant
+                    //Delete selected plant:
                     viewModel.deletePlant(position, holder.plantName.text.toString())
                 }
                 .setNegativeButton("No") { dialog, id ->
@@ -70,7 +72,9 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
             val alert = builder.create()
             alert.show()
         }
-        if (plant?.opening?.before(Date()) == true){ //Plant can be opened
+
+        //Display the view button as clickable or not clickable:
+        if (plant?.opening?.before(Date()) == true){ //Plant can be opened:
             val drawable = holder.context.resources.getDrawable(R.drawable.view_purple)
             holder.viewButton.foreground = drawable
             holder.viewButton.setOnClickListener {
@@ -79,7 +83,7 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
                 viewPlantFragment.show(fragmentManager, "ViewPlantFragment")
             }
         }
-        else{
+        else{ //Plant can't be opened yet:
             val drawable = holder.context.resources.getDrawable(R.drawable.view_grey)
             holder.viewButton.isClickable = false
             holder.viewButton.foreground = drawable

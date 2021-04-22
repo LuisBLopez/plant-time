@@ -28,6 +28,7 @@ class PageViewModel : ViewModel() {
         getSelf()
     }
 
+    //Observes updates in the local user's plants list:
     private fun listenToUserPlants() {
         db.collection("user").document(localUidSample).collection("plants")
             .addSnapshotListener { snapshot, e ->
@@ -43,11 +44,12 @@ class PageViewModel : ViewModel() {
                             allPlants.add(plant)
                         }
                     }
-                    _plants.value = allPlants
+                    _plants.value = allPlants //Save the updated plant list in the viewmodel's plants variable.
                 }
             }
     }
 
+    //Observes updates in the local user's friends list:
     private fun listenToFriends() {
         db.collection("user").addSnapshotListener {
             snapshot, e ->
@@ -78,7 +80,7 @@ class PageViewModel : ViewModel() {
                                     }
                                 }
                             }
-                            _friends.value = allFriends
+                            _friends.value = allFriends //Save the updated friend list in the viewmodel's friends variable.
                         }
                     }
                 }
@@ -90,6 +92,7 @@ class PageViewModel : ViewModel() {
         "Hello world from section: $it"
     }
 
+    //Allows for tab page changing:
     fun setIndex(index: Int) {
         _index.value = index
     }
@@ -107,8 +110,8 @@ class PageViewModel : ViewModel() {
         get() {return _user}
         set(value) {_user = value}
 
+    //Find the plant in the database and delete it:
     fun deletePlant(position: Int, plantName: String) {
-        //Find the plant in the database and delete it:
         db.collection("user").document(localUidSample).collection("plants").get().addOnSuccessListener {
             val plant = it.documents.get(position)
             if (plant.getString("name").equals(plantName))  {
@@ -117,12 +120,14 @@ class PageViewModel : ViewModel() {
         }
     }
 
+    //Update the nickname of the local user both in the database and local variables:
     fun changeNickname(nickname: String){
         db.collection("user").document(localUidSample).update("nickname", nickname)
         _self.value?.nickname = nickname
         self.value?.nickname = nickname
     }
 
+    //Get name and email of the local user from the database:
     private fun getSelf(){
         db.collection("user").document(localUidSample).get().addOnSuccessListener {
             val name = it.get("nickname").toString()
@@ -137,6 +142,8 @@ class PageViewModel : ViewModel() {
             }
         }
     }
+
+    //Get name and email of any user from the database:
     fun getUser(Id: String) {
         db.collection("user").document(Id).get().addOnSuccessListener {
             val name = it.get("nickname").toString()

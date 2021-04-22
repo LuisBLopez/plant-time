@@ -23,7 +23,7 @@ class SettingsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java).apply {
-            setIndex(3)
+            setIndex(3) //Third tab of the main screen.
         }
     }
 
@@ -38,15 +38,21 @@ class SettingsFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //Observe updates of the self variable to display them on screen:
         pageViewModel.self.observe(viewLifecycleOwner,{ self ->
             binding.name.setText(self.nickname)
             binding.email.text = self.email
         })
+
+        //Trigger notifications on or off:
         binding.notifications.setOnClickListener(){
             notifications = if(notifications.equals("On")) "Off"
             else "On"
             binding.notifications.text= "Notifications: $notifications"
         }
+
+        //Update the nickname in the database (and "self" variable) when done editing it:
         binding.name.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 //Do nothing
@@ -58,6 +64,8 @@ class SettingsFragment : Fragment() {
                 pageViewModel.changeNickname(s.toString())
             }
         })
+
+        //Log out from Firebase Auth and return to the log in activity:
         binding.logout.setOnClickListener{
             FirebaseAuth.getInstance().signOut()
             requireActivity().finish()

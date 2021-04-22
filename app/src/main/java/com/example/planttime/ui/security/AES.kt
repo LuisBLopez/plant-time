@@ -19,19 +19,18 @@ class AES {
         val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
         val plainText = strToEncrypt.toByteArray(Charsets.UTF_8)
         if(!sharedPref.contains("secret_key") && !sharedPref.contains("initialization_vector")){
+            //Generate a new key and save it in the shared preferences of the device:
             val keygen = KeyGenerator.getInstance("AES")
             keygen.init(256)
             val key = keygen.generateKey()
             saveSecretKey(context, key)
+            //Encrypt the text and return it. Store the initialization vector too:
             cipher.init(Cipher.ENCRYPT_MODE, key)
             val cipherText = cipher.doFinal(plainText)
             saveInitializationVector(context, cipher.iv)
-            val sb = StringBuilder()
-            for (b in cipherText) {
-                sb.append(b.toChar())
-            }
             return cipherText
         }
+        //Otherwise, retrieve key and initialization vector from the shared preferences directly to encrypt data:
         val key: SecretKey = getSavedSecretKey(context)
         val ivSpec = IvParameterSpec(getSavedInitializationVector(context))
         cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec)
@@ -39,6 +38,7 @@ class AES {
     }
 
     fun decrypt(context:Context, dataToDecrypt: ByteArray): ByteArray {
+        //Retrieve key and initialization vector from the shared preferences to decrypt the data:
         val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
         val ivSpec = IvParameterSpec(getSavedInitializationVector(context))
         cipher.init(Cipher.DECRYPT_MODE, getSavedSecretKey(context), ivSpec)

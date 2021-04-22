@@ -19,8 +19,10 @@ class MyPlantsFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java).apply {
-            setIndex(1)
+            setIndex(1) //First tab of the main screen.
         }
+
+        //Observe changes in the local user's plants list in real time:
         pageViewModel.plants.observe(this, { plants ->
             binding.recyclerView.adapter = PlantAdapter(pageViewModel)
         })
@@ -38,10 +40,11 @@ class MyPlantsFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = PlantAdapter(pageViewModel)
 
+        //Button for adding a new plant:
         binding.fab.setOnClickListener {
             Snackbar.make(view, "Create a new plant", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
-
+            //Move to the adding plant procedure activity:
             val intent = Intent(requireActivity(), AddPlantActivity::class.java)
             startActivity(intent)
         }

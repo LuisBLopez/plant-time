@@ -29,9 +29,12 @@ class AddFriendActivity : AppCompatActivity() {
     }
 
     private fun onViewCreated(view: View) {
+        //Confirm adding new friend button:
         binding.addFriend.setOnClickListener{
+            //Check that an email has been input:
             val email = binding.friendEmail.text
             if(!email.isNullOrEmpty()){
+                //Retrieve the list of existing users from the database:
                 db.collection("user").addSnapshotListener{
                     snapshot, e ->
                     if(e != null || snapshot == null){
@@ -40,14 +43,18 @@ class AddFriendActivity : AppCompatActivity() {
                         return@addSnapshotListener
                     }
                     else {
+                        //Find the right user by checking their emails:
                         snapshot.documents.forEach{ field ->
                             val friendEmail = field.get("email")
                             if(friendEmail != null && friendEmail.toString() == email.toString()){
+                                //The user with matching email has been found.
                                 db.collection("user").document(localUidSample).get().addOnSuccessListener { user ->
+                                    //If the local user has a friendlist already, add the friend directly:
                                     if (user.get("friends") != null) {
                                         db.collection("user").document(localUidSample)
                                             .update("friends", FieldValue.arrayUnion(field.id))
                                     }
+                                    //Otherwise, create it and add the new friend:
                                     else {
                                         val data = hashMapOf("friends" to listOf(field.id))
                                         db.collection("user").document(localUidSample).set(data, SetOptions.merge())
@@ -66,6 +73,7 @@ class AddFriendActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
             }
         }
+        //Return button:
         binding.back.setOnClickListener{
             finish()
         }
