@@ -14,7 +14,6 @@ import com.google.android.material.snackbar.Snackbar
 
 class FriendsFragment: Fragment() {
     private lateinit var pageViewModel: PageViewModel
-    //private val myPlants: List<Plant> = listOf(Plant(0, "Cactus", Calendar.getInstance().time), Plant(1, "Succulent", Calendar.getInstance().time), Plant(2, "Dahlia", Calendar.getInstance().time))
     private lateinit var binding: FragmentFriendsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

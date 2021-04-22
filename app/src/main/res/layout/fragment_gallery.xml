@@ -7,6 +7,17 @@
     tools:context=".ui.api.GalleryFragment"
     android:id="@+id/fragment_unsplash_photos">
 
+    <ImageView
+        android:id="@+id/plant_pic_chosen"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
@@ -49,15 +60,5 @@
         android:text="No results found for this query"
         android:visibility="gone"
         tools:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/plant_pic_chosen"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent" />
 
 </RelativeLayout>

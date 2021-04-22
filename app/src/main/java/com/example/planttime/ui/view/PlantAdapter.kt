@@ -116,7 +116,7 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
 
         //println("getItemCount: "+plants?.size)
 
-        return plants?.size ?: 0
+        return plants?.size ?: 1
 
         //return plantList.size
         /*var plantsCount = 0

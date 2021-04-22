@@ -30,11 +30,11 @@ class FriendAdapter(viewModel: PageViewModel): RecyclerView.Adapter<FriendAdapte
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //holder.friend.text = friends[position].toString()
-        holder.friend.text = vModel.friends.value?.get(position)?.toString() ?: "AMIGO, EMAIL@email.email"
+        holder.friend.text = vModel.friends.value?.get(position)?.toString() ?: "You have no friends registered yet. Add one using the button below! :)"
     }
 
     override fun getItemCount(): Int {
-        return vModel.friends.value?.size ?: 2
+        return vModel.friends.value?.size ?: 1
         //return friends.size
     }
 }

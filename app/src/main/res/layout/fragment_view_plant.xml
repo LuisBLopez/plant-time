@@ -14,85 +14,98 @@
          <TableLayout
              android:layout_width="match_parent"
              android:layout_height="wrap_content">
-             <TableRow>
+             <TableRow
+                 android:layout_height="wrap_content"
+                 android:layout_margin="10dp">
                  <TextView
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:layout_margin="10dp"
                      android:text="Name:"
                      android:fontFamily="@font/moontime_regular"
                      android:textSize="40sp"
                      android:textColor="@color/black"
-                     />
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_margin="10dp"
-                     android:textSize="15sp"
-                     android:id="@+id/plant_name"
-                     android:hint="Name of the plant"
-                     />
-             </TableRow>
-             <TableRow>
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_margin="10dp"
-                     android:text="Creator:"
-                     android:fontFamily="@font/moontime_regular"
-                     android:textSize="40sp"
-                     android:textColor="@color/black"
-                     />
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_margin="10dp"
-                     android:textSize="15sp"
-                     android:id="@+id/plant_creator"
-                     android:hint="Creator of the plant"
-                     android:scrollHorizontally="true"
-                     android:scrollbars="horizontal"
-                     />
-             </TableRow>
-             <TableRow>
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_margin="10dp"
-                     android:text="Opened:"
-                     android:fontFamily="@font/moontime_regular"
-                     android:textSize="40sp"
-                     android:textColor="@color/black"
-                     />
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_margin="10sp"
-                     android:id="@+id/expiration_date"
-                     android:textSize="15sp"
-                     android:hint="Expiration date of the plant"
-                     android:inputType="date"
-                     />
-             </TableRow>
-             <TableRow>
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_margin="10dp"
-                     android:text="Letter:"
-                     android:fontFamily="@font/moontime_regular"
-                     android:textSize="40sp"
-                     android:textColor="@color/black"
+                     android:layout_marginRight="5dp"
                      />
                  <TextView
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content"
-                     android:layout_margin="10dp"
+                     android:textSize="15sp"
+                     android:id="@+id/plant_name"
+                     android:hint="Name of the plant"
+                     android:layout_weight="1"
+                     android:maxLines="3"
+                     android:ellipsize="end"
+                     />
+             </TableRow>
+             <TableRow
+                 android:layout_height="wrap_content"
+                 android:layout_margin="10dp">
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Creator:"
+                     android:fontFamily="@font/moontime_regular"
+                     android:textSize="40sp"
+                     android:textColor="@color/black"
+                     android:layout_marginRight="5dp"
+                     />
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:textSize="15sp"
+                     android:id="@+id/plant_creator"
+                     android:hint="Creator of the plant"
+                     android:layout_weight="1"
+                     android:maxLines="3"
+                     android:ellipsize="end"
+                     android:scrollHorizontally="true"
+                     android:scrollbars="horizontal"
+                     />
+             </TableRow>
+             <TableRow
+                 android:layout_height="wrap_content"
+                 android:layout_margin="10dp">
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Opened:"
+                     android:fontFamily="@font/moontime_regular"
+                     android:textSize="40sp"
+                     android:textColor="@color/black"
+                     android:layout_marginRight="5dp"
+                     />
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:id="@+id/expiration_date"
+                     android:textSize="15sp"
+                     android:hint="Expiration date of the plant"
+                     android:layout_weight="1"
+                     android:inputType="date"
+                     />
+             </TableRow>
+             <TableRow
+                 android:layout_height="wrap_content"
+                 android:layout_margin="10dp">
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Letter:"
+                     android:fontFamily="@font/moontime_regular"
+                     android:textSize="40sp"
+                     android:textColor="@color/black"
+                     android:layout_marginRight="5dp"
+                     />
+                 <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
                      android:textSize="15sp"
                      android:id="@+id/plant_letter"
                      android:hint="Letter of the plant"
+                     android:layout_weight="1"
                      android:maxLines="20"
                      android:scrollbars="vertical"
+                     android:paddingBottom="20dp"
                      />
              </TableRow>
          </TableLayout>
