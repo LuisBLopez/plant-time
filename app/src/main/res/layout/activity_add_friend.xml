@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_margin="20dp"
         android:hint="Enter the email of your friend here..."
+        android:inputType="textEmailAddress"
         android:maxLines="1"
         />
     <Button
