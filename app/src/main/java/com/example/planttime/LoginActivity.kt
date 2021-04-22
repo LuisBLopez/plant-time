@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.planttime.databinding.ActivityLoginBinding
@@ -31,11 +30,11 @@ class LoginActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
         db.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
 
-        onViewCreated(binding.root, savedInstanceState)
+        onViewCreated(binding.root)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    fun onViewCreated(view: View) {
 
         binding.btnRegister.setOnClickListener {
             if (binding.email.text.isNotEmpty() && binding.password.text.isNotEmpty()) {

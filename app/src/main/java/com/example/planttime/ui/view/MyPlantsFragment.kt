@@ -2,7 +2,6 @@ package com.example.planttime.ui.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +43,6 @@ class MyPlantsFragment: Fragment() {
                     .setAction("Action", null).show()
 
             val intent = Intent(requireActivity(), AddPlantActivity::class.java)
-            //intent.putExtra("firestore",pageViewModel)
             startActivity(intent)
         }
     }

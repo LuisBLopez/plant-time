@@ -14,7 +14,7 @@ import com.google.firebase.firestore.SetOptions
 class AddFriendActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddFriendBinding
-    private val localUidSample = FirebaseAuth.getInstance().currentUser?.uid!! //"RzZU71c31Zmi3vCiHbsC" //"l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
+    private val localUidSample = FirebaseAuth.getInstance().currentUser?.uid!!
     private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,12 +25,10 @@ class AddFriendActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
         db.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
 
-        onViewCreated(binding.root, savedInstanceState)
-
-        println("LOCAL UID from ADDFRIENDACTIVITY is: $localUidSample")
+        onViewCreated(binding.root)
     }
 
-    private fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    private fun onViewCreated(view: View) {
         binding.addFriend.setOnClickListener{
             val email = binding.friendEmail.text
             if(!email.isNullOrEmpty()){

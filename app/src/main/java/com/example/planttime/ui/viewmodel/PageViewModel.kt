@@ -14,21 +14,18 @@ class PageViewModel : ViewModel() {
 
     private val _index = MutableLiveData<Int>()
 
-    private lateinit var db: FirebaseFirestore
-    private val localUidSample = FirebaseAuth.getInstance().currentUser?.uid!! //"RzZU71c31Zmi3vCiHbsC" //"l4VBLVnZeN1M7fMMhee8" //Placeholder user Id. This will later be modified whenever we implement the Log-in operations.
+    private var db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val localUidSample = FirebaseAuth.getInstance().currentUser?.uid!!
     private var _plants: MutableLiveData<ArrayList<Plant>> = MutableLiveData<ArrayList<Plant>>()
     private var _friends: MutableLiveData<ArrayList<Friend>> = MutableLiveData<ArrayList<Friend>>()
     private var _self: MutableLiveData<Friend> = MutableLiveData<Friend>() //Self
     private var _user: MutableLiveData<Friend> = MutableLiveData<Friend>() //User to be retrieved
 
     init {
-        db = FirebaseFirestore.getInstance()
         db.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
         listenToUserPlants()
         listenToFriends()
         getSelf()
-
-        println("LOCAL UID from PAGEVIEWMODEL is: $localUidSample")
     }
 
     private fun listenToUserPlants() {
@@ -95,10 +92,6 @@ class PageViewModel : ViewModel() {
 
     fun setIndex(index: Int) {
         _index.value = index
-    }
-
-    fun getDb(): FirebaseFirestore{
-        return db
     }
 
     internal var plants:MutableLiveData<ArrayList<Plant>>

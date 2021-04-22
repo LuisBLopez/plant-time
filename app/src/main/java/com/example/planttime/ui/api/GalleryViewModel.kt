@@ -17,10 +17,6 @@ class GalleryViewModel @ViewModelInject constructor(
         repository.getSearchResults(queryString).cachedIn(viewModelScope)
     }
 
-    fun searchPhotos(query: String) {
-        currentQuery.value = query
-    }
-
     companion object {
         private const val DEFAULT_QUERY = "plants"
     }

@@ -48,10 +48,7 @@ class ViewPlantFragment : DialogFragment() {
         for(i in 0..(sb.length-1)){
             cipherTextBA.set(i, sb.get(i).toByte())
         }
-        //android.util.Base64.encode(cipherText.toByteArray(), android.util.Base64.DEFAULT)
-        //val letter = aes.decrypt(PlantTimeApp.applicationContext(), android.util.Base64.encode(cipherTextBA, android.util.Base64.DEFAULT))
         val letter = aes.decrypt(PlantTimeApp.applicationContext(), cipherTextBA)
-        println("letter ${String(letter)}")
         binding.plantLetter.text = String(letter)
     }
 

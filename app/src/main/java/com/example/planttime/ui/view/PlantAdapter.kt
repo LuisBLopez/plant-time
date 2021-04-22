@@ -1,5 +1,6 @@
 package com.example.planttime.ui.view
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Build
 import android.view.LayoutInflater
@@ -12,21 +13,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.planttime.R
 import com.example.planttime.databinding.ItemPlantBinding
-import com.example.planttime.ui.model.Plant
 import com.example.planttime.ui.viewmodel.PageViewModel
 import java.util.*
 
 @Suppress("DEPRECATION")
 class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<PlantAdapter.ViewHolder>() {
-    @RequiresApi(Build.VERSION_CODES.O)
-    private val myPlants: List<Plant> = listOf(
-            Plant(Date(), "RzZU71c31Zmi3vCiHbsC", false, "Cactus", Date()),
-            Plant(Date(), "l4VBLVnZeN1M7fMMhee8", true, "Succulent", Date()),
-            Plant(Date(), "l4VBLVnZeN1M7fMMhee8", false, "Dahlia", Date()))
-
-    //private val db = FirebaseFirestore.getInstance()
-    //private val localUidSample = "RzZU71c31Zmi3vCiHbsC"
-    private lateinit var plantList: List<Plant>
 
     class ViewHolder(binding: ItemPlantBinding ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         val plantName = binding.plantName
@@ -47,6 +38,7 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
         return ViewHolder(ItemPlantBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val plant = viewModel.plants.value?.get(position)
@@ -79,13 +71,8 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
             alert.show()
         }
         if (plant?.opening?.before(Date()) == true){ //Plant can be opened
-            //println("I am enabled")
             val drawable = holder.context.resources.getDrawable(R.drawable.view_purple)
             holder.viewButton.foreground = drawable
-            /*viewModel.getUser(plant?.creator)
-            viewModel.user.observe(this,{
-                println(it)
-            })*/
             holder.viewButton.setOnClickListener {
                 val viewPlantFragment = ViewPlantFragment.newInstance(plant, viewModel)
                 val fragmentManager = (holder.context as AppCompatActivity).supportFragmentManager
@@ -93,54 +80,16 @@ class PlantAdapter(private val viewModel: PageViewModel):  RecyclerView.Adapter<
             }
         }
         else{
-            //println("I am disabled")
             val drawable = holder.context.resources.getDrawable(R.drawable.view_grey)
             holder.viewButton.isClickable = false
             holder.viewButton.foreground = drawable
         }
-
-        //val p = plantList[position]
-
-        /*db.collection("user").document(localUidSample).get().addOnSuccessListener {
-            val plantName = it.get(FieldPath.of("plants","plant${position}","name")) as String?
-            holder.plantName.text = plantName
-        }.addOnFailureListener { //Placeholder plants
-            var plant = myPlants[position]
-            holder.plantName.text = "${plant.name} created on ${plant.time_created.toString()}"
-        }*/
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getItemCount(): Int {
         val plants = viewModel.plants.value
-
-        //println("getItemCount: "+plants?.size)
-
         return plants?.size ?: 1
-
-        //return plantList.size
-        /*var plantsCount = 0
-
-        db.collection("user").document(localUidSample).get().addOnSuccessListener {
-            var stop = false
-            var plant = 1
-            var plantsCount = 0
-            while (!stop) {
-                if (it.get(FieldPath.of("plants", "plant${plant}", "name")) != null) {
-                    println("Plants count:${plantsCount}, plant:${plant}")
-                    plant++
-                    plantsCount++
-                }
-                else stop = true
-            }
-        }.addOnFailureListener{
-            plantsCount = myPlants.size
-        }
-        println("Number of plants:${plantsCount}")
-        return plantsCount
-        */
-        //return myPlants.size //Placeholder value
     }
-
 }
 

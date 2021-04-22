@@ -41,7 +41,6 @@ class FriendsFragment: Fragment() {
             Snackbar.make(view, "Add a new friend", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
             val intent = Intent(requireActivity(), AddFriendActivity::class.java)
-            //intent.putExtra("firestore",pageViewModel)
             startActivity(intent)
         }
     }

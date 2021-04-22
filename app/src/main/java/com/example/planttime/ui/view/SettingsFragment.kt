@@ -1,6 +1,6 @@
 package com.example.planttime.ui.view
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,16 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.planttime.LoginActivity
-import com.example.planttime.MainActivity
 import com.example.planttime.databinding.FragmentSettingsBinding
 import com.example.planttime.ui.viewmodel.PageViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 
-/**
- * A placeholder fragment containing a simple view.
- */
+
 class SettingsFragment : Fragment() {
 
     private lateinit var pageViewModel: PageViewModel
@@ -40,6 +35,7 @@ class SettingsFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         pageViewModel.self.observe(viewLifecycleOwner,{ self ->
@@ -64,8 +60,6 @@ class SettingsFragment : Fragment() {
         })
         binding.logout.setOnClickListener{
             FirebaseAuth.getInstance().signOut()
-            /*val intent = Intent(requireActivity(), LoginActivity::class.java)
-            startActivity(intent)*/
             requireActivity().finish()
         }
     }

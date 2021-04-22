@@ -3,14 +3,10 @@ package com.example.planttime.ui.api
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.View
-import androidx.core.text.set
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
-import com.example.planttime.AddPlantActivity
 import com.example.planttime.R
-import com.example.planttime.databinding.ActivityAddPlantBinding
 import com.example.planttime.databinding.FragmentGalleryBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,7 +30,7 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery), UnsplashPhotoAdapte
             recyclerView.adapter = adapter
         }
 
-        viewModel.photos.observe(viewLifecycleOwner, Observer {
+        viewModel.photos.observe(viewLifecycleOwner, {
             adapter.submitData(viewLifecycleOwner.lifecycle, it)
         })
     }
@@ -48,6 +44,7 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery), UnsplashPhotoAdapte
             Glide.with(this.plantPicChosen)
                     .load(photo.urls.thumb)
                     .centerCrop()
+                    .into(this.plantPicChosen)
         }
     }
 
