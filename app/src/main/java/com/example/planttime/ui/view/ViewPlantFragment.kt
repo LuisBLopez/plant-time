@@ -60,9 +60,11 @@ class ViewPlantFragment : DialogFragment() {
         private const val EXPDATE = "expirationDate"
         private const val LETTER = "letter"
         private var user: MutableLiveData<Friend> = MutableLiveData<Friend>() //User for the creator of the plant
+        //Pass the plant to be shown as a parameter when creating a new instance:
         fun newInstance(plant: Plant, pageViewModel: PageViewModel): ViewPlantFragment {
             pageViewModel.getUser(plant.creator) //obtain creator as user from database
             user = pageViewModel.user //retrieve user from pageviewmodel
+            //Put plant data into the arguments:
             val arguments = Bundle()
             arguments.putString(NAME, plant.name)
             arguments.putString(EXPDATE, "${plant.opening?.date}/${plant.opening?.month?.plus(1)}/${plant.opening?.year?.plus(1900)}")
